@@ -1,14 +1,13 @@
 --[[
     ══════════════════════════════════════════════════
-      ZetGames-AimLock V4.4 | OFFICIAL RESMI — FULL FIXED
-      TEMA RESMI: HITAM & PUTIH ELEGAN (PREMIUM)
+      ZetGames-AimLock V4.4 | OFFICIAL RESMI
+      THEME: 🖤 ELEGANT (Black & White Premium)
     ══════════════════════════════════════════════════
-      Theme     : 🖤 ELEGANT (Black & White Premium)
-      Login     : ✅ WAJIB KEY
+      Theme    : ⚫⚪ Elegant (Black & White Premium)
+      Login    : ✅ WAJIB KEY
       Night Lock: ✅ ACTIVE (Auto Kick)
-      Anti-Kick : ✅ SAFE MODE
-      Vibe      : Minimalis · Premium · Clean
-
+      Anti-Kick: ✅ SAFE MODE
+      
       ⭐ FOLLOW @ZetGames di rscripts.net
       ⭐ Link: rscripts.net/@ZetGames
     ══════════════════════════════════════════════════
@@ -17,301 +16,50 @@
 --==============================================================
 -- SERVICES
 --==============================================================
-local Players            = game:GetService("Players")
-local RunService         = game:GetService("RunService")
-local UserInputService   = game:GetService("UserInputService")
-local TweenService       = game:GetService("TweenService")
-local Lighting           = game:GetService("Lighting")
-local Workspace          = game:GetService("Workspace")
-local ReplicatedStorage  = game:GetService("ReplicatedStorage")
-local SoundService       = game:GetService("SoundService")
-local HttpService        = game:GetService("HttpService")
-local TeleportService    = game:GetService("TeleportService")
-local VirtualUser        = game:GetService("VirtualUser")
-local CoreGui            = game:GetService("CoreGui")
-local Camera             = workspace.CurrentCamera
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local Lighting = game:GetService("Lighting")
+local Workspace = game:GetService("Workspace")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local SoundService = game:GetService("SoundService")
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local VirtualUser = game:GetService("VirtualUser")
+local CoreGui = game:GetService("CoreGui")
+local Camera = workspace.CurrentCamera
 
 local LocalPlayer = Players.LocalPlayer
-local Mouse       = LocalPlayer:GetMouse()
+local Mouse = LocalPlayer:GetMouse()
 
 pcall(function() SoundService.RespectFilteringEnabled = false end)
-print("[ZET] Loading V4.4 ELEGANT — FULL FIXED...")
+
+print("[ZET] Loading V4.4 ELEGANT...")
 
 --==============================================================
--- THEME PRESETS
+-- THEME (ELEGANT DEFAULT)
 --==============================================================
 local ThemePresets = {
-    Elegant = {
-        MainBG        = Color3.fromRGB(8, 8, 10),
-        PanelBG       = Color3.fromRGB(18, 18, 21),
-        SectionBG     = Color3.fromRGB(26, 26, 30),
-        Accent        = Color3.fromRGB(245, 245, 247),
-        AccentLight   = Color3.fromRGB(255, 255, 255),
-        AccentDark    = Color3.fromRGB(120, 120, 128),
-        ButtonBG      = Color3.fromRGB(24, 24, 28),
-        ButtonActive  = Color3.fromRGB(220, 220, 225),
-        Text          = Color3.fromRGB(245, 245, 247),
-        TextLight     = Color3.fromRGB(160, 160, 170),
-        Border        = Color3.fromRGB(60, 60, 68),
-        Gold          = Color3.fromRGB(212, 175, 55),
-    },
-    Mono = {
-        MainBG        = Color3.fromRGB(0, 0, 0),
-        PanelBG       = Color3.fromRGB(14, 14, 14),
-        SectionBG     = Color3.fromRGB(20, 20, 20),
-        Accent        = Color3.fromRGB(230, 230, 230),
-        AccentLight   = Color3.fromRGB(255, 255, 255),
-        AccentDark    = Color3.fromRGB(90, 90, 90),
-        ButtonBG      = Color3.fromRGB(18, 18, 18),
-        ButtonActive  = Color3.fromRGB(200, 200, 200),
-        Text          = Color3.fromRGB(230, 230, 230),
-        TextLight     = Color3.fromRGB(130, 130, 130),
-        Border        = Color3.fromRGB(50, 50, 50),
-        Gold          = Color3.fromRGB(200, 170, 80),
-    },
-    Platinum = {
-        MainBG        = Color3.fromRGB(245, 245, 248),
-        PanelBG       = Color3.fromRGB(255, 255, 255),
-        SectionBG     = Color3.fromRGB(235, 235, 240),
-        Accent        = Color3.fromRGB(20, 20, 25),
-        AccentLight   = Color3.fromRGB(0, 0, 0),
-        AccentDark    = Color3.fromRGB(100, 100, 110),
-        ButtonBG      = Color3.fromRGB(240, 240, 244),
-        ButtonActive  = Color3.fromRGB(30, 30, 35),
-        Text          = Color3.fromRGB(20, 20, 25),
-        TextLight     = Color3.fromRGB(90, 90, 100),
-        Border        = Color3.fromRGB(180, 180, 190),
-        Gold          = Color3.fromRGB(180, 140, 30),
-    },
-    Graphite = {
-        MainBG        = Color3.fromRGB(20, 22, 25),
-        PanelBG       = Color3.fromRGB(32, 34, 38),
-        SectionBG     = Color3.fromRGB(42, 44, 48),
-        Accent        = Color3.fromRGB(220, 220, 225),
-        AccentLight   = Color3.fromRGB(255, 255, 255),
-        AccentDark    = Color3.fromRGB(130, 132, 138),
-        ButtonBG      = Color3.fromRGB(38, 40, 44),
-        ButtonActive  = Color3.fromRGB(200, 202, 208),
-        Text          = Color3.fromRGB(225, 225, 230),
-        TextLight     = Color3.fromRGB(150, 152, 158),
-        Border        = Color3.fromRGB(70, 72, 78),
-        Gold          = Color3.fromRGB(190, 160, 80),
-    },
-    Obsidian = {
-        MainBG        = Color3.fromRGB(6, 6, 8),
-        PanelBG       = Color3.fromRGB(14, 14, 18),
-        SectionBG     = Color3.fromRGB(22, 20, 16),
-        Accent        = Color3.fromRGB(212, 175, 55),
-        AccentLight   = Color3.fromRGB(240, 210, 120),
-        AccentDark    = Color3.fromRGB(140, 110, 30),
-        ButtonBG      = Color3.fromRGB(20, 18, 14),
-        ButtonActive  = Color3.fromRGB(180, 145, 40),
-        Text          = Color3.fromRGB(240, 225, 180),
-        TextLight     = Color3.fromRGB(180, 160, 110),
-        Border        = Color3.fromRGB(90, 75, 30),
-        Gold          = Color3.fromRGB(255, 215, 100),
-    },
+    Elegant = {MainBG=Color3.fromRGB(8,8,10), PanelBG=Color3.fromRGB(18,18,21), SectionBG=Color3.fromRGB(26,26,30), Accent=Color3.fromRGB(245,245,247), AccentLight=Color3.fromRGB(255,255,255), AccentDark=Color3.fromRGB(120,120,128), ButtonBG=Color3.fromRGB(24,24,28), ButtonActive=Color3.fromRGB(220,220,225), Text=Color3.fromRGB(245,245,247), TextLight=Color3.fromRGB(160,160,170)},
+    Mono = {MainBG=Color3.fromRGB(0,0,0), PanelBG=Color3.fromRGB(14,14,14), SectionBG=Color3.fromRGB(20,20,20), Accent=Color3.fromRGB(230,230,230), AccentLight=Color3.fromRGB(255,255,255), AccentDark=Color3.fromRGB(90,90,90), ButtonBG=Color3.fromRGB(18,18,18), ButtonActive=Color3.fromRGB(200,200,200), Text=Color3.fromRGB(230,230,230), TextLight=Color3.fromRGB(130,130,130)},
+    Platinum = {MainBG=Color3.fromRGB(245,245,248), PanelBG=Color3.fromRGB(255,255,255), SectionBG=Color3.fromRGB(235,235,240), Accent=Color3.fromRGB(20,20,25), AccentLight=Color3.fromRGB(0,0,0), AccentDark=Color3.fromRGB(100,100,110), ButtonBG=Color3.fromRGB(240,240,244), ButtonActive=Color3.fromRGB(30,30,35), Text=Color3.fromRGB(20,20,25), TextLight=Color3.fromRGB(90,90,100)},
+    Graphite = {MainBG=Color3.fromRGB(20,22,25), PanelBG=Color3.fromRGB(32,34,38), SectionBG=Color3.fromRGB(42,44,48), Accent=Color3.fromRGB(220,220,225), AccentLight=Color3.fromRGB(255,255,255), AccentDark=Color3.fromRGB(130,132,138), ButtonBG=Color3.fromRGB(38,40,44), ButtonActive=Color3.fromRGB(200,202,208), Text=Color3.fromRGB(225,225,230), TextLight=Color3.fromRGB(150,152,158)},
+    Obsidian = {MainBG=Color3.fromRGB(6,6,8), PanelBG=Color3.fromRGB(14,14,18), SectionBG=Color3.fromRGB(22,20,16), Accent=Color3.fromRGB(212,175,55), AccentLight=Color3.fromRGB(240,210,120), AccentDark=Color3.fromRGB(140,110,30), ButtonBG=Color3.fromRGB(20,18,14), ButtonActive=Color3.fromRGB(180,145,40), Text=Color3.fromRGB(240,225,180), TextLight=Color3.fromRGB(180,160,110)},
 }
 
 local CurrentThemeName = "Elegant"
 local THEME = {}
 for k, v in pairs(ThemePresets.Elegant) do THEME[k] = v end
-THEME.YellowDot = Color3.fromRGB(212, 175, 55)
-THEME.GreenDot  = Color3.fromRGB(80, 200, 120)
-THEME.RedDot    = Color3.fromRGB(230, 60, 60)
-THEME.BlueDot   = Color3.fromRGB(100, 160, 255)
-THEME.Shield    = Color3.fromRGB(245, 245, 247)
-THEME.Success   = Color3.fromRGB(80, 200, 120)
-THEME.Locked    = Color3.fromRGB(110, 110, 120)
-THEME.LockedBG  = Color3.fromRGB(28, 28, 32)
-
---==============================================================
--- MOBILE DETECTION
---==============================================================
-local function IsMobile()
-    return UserInputService.TouchEnabled
-end
-local function IsSmallScreen()
-    local vp = Camera.ViewportSize
-    return vp.X < 800 or vp.Y < 600
-end
-
-local UI_SCALE = IsMobile() and 0.85 or 1
-
---==============================================================
--- ANIMATION HELPERS (FIXED)
---==============================================================
-local Anim = {}
-
-function Anim.FadeIn(gui, duration, delay)
-    duration = duration or 0.4
-    delay = delay or 0
-    if not gui then return end
-    local origTrans = gui.BackgroundTransparency
-    gui.BackgroundTransparency = 1
-    task.delay(delay, function()
-        if gui and gui.Parent then
-            TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-                BackgroundTransparency = origTrans
-            }):Play()
-        end
-    end)
-end
-
-function Anim.SlideIn(gui, fromX, duration, delay)
-    duration = duration or 0.5
-    delay = delay or 0
-    if not gui then return end
-    local target = gui.Position
-    gui.Position = UDim2.new(target.X.Scale, target.X.Offset + (fromX or 60), target.Y.Scale, target.Y.Offset)
-    task.delay(delay, function()
-        if gui and gui.Parent then
-            TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
-                Position = target
-            }):Play()
-        end
-    end)
-end
-
--- FIX: guard kalau target size 0
-function Anim.PopIn(gui, duration, delay)
-    duration = duration or 0.35
-    delay = delay or 0
-    if not gui or not gui:IsA("GuiObject") then return end
-    local targetSize = gui.Size
-    if targetSize.X.Offset == 0 and targetSize.Y.Offset == 0 then
-        return
-    end
-    gui.Size = UDim2.new(0, 0, 0, 0)
-    task.delay(delay, function()
-        if gui and gui.Parent then
-            TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-                Size = targetSize
-            }):Play()
-        end
-    end)
-end
-
-function Anim.HoverGlow(gui, baseColor, hoverColor, accent)
-    if not gui then return end
-    baseColor = baseColor or THEME.ButtonBG
-    hoverColor = hoverColor or THEME.PanelBG
-    accent = accent or THEME.Accent
-    gui.MouseEnter:Connect(function()
-        TweenService:Create(gui, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-            BackgroundColor3 = hoverColor,
-            BorderColor3 = accent
-        }):Play()
-    end)
-    gui.MouseLeave:Connect(function()
-        TweenService:Create(gui, TweenInfo.new(0.22, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-            BackgroundColor3 = baseColor,
-            BorderColor3 = THEME.Border or THEME.Accent
-        }):Play()
-    end)
-end
-
-function Anim.Ripple(button)
-    if not button then return end
-    button.MouseButton1Down:Connect(function()
-        local ripple = Instance.new("Frame")
-        ripple.Size = UDim2.new(0, 0, 0, 0)
-        ripple.Position = UDim2.new(0.5, 0, 0.5, 0)
-        ripple.AnchorPoint = Vector2.new(0.5, 0.5)
-        ripple.BackgroundColor3 = THEME.Accent
-        ripple.BackgroundTransparency = 0.6
-        ripple.BorderSizePixel = 0
-        ripple.ZIndex = button.ZIndex + 1
-        ripple.Parent = button
-        Instance.new("UICorner", ripple).CornerRadius = UDim.new(1, 0)
-
-        local targetSize = math.max(button.AbsoluteSize.X, button.AbsoluteSize.Y) * 2
-        TweenService:Create(ripple, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-            Size = UDim2.new(0, targetSize, 0, targetSize),
-            BackgroundTransparency = 1
-        }):Play()
-        task.delay(0.55, function()
-            if ripple and ripple.Parent then ripple:Destroy() end
-        end)
-    end)
-end
-
-function Anim.Pulse(gui, prop, valA, valB, duration)
-    if not gui then return end
-    duration = duration or 1
-    task.spawn(function()
-        while gui and gui.Parent do
-            local tw1 = TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {[prop] = valA})
-            tw1:Play(); tw1.Completed:Wait()
-            if not gui.Parent then break end
-            local tw2 = TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), {[prop] = valB})
-            tw2:Play(); tw2.Completed:Wait()
-        end
-    end)
-end
-
-function Anim.Shake(gui)
-    if not gui then return end
-    local orig = gui.Position
-    task.spawn(function()
-        for i = 1, 6 do
-            if not gui or not gui.Parent then break end
-            local offset = (i % 2 == 0) and 6 or -6
-            TweenService:Create(gui, TweenInfo.new(0.05), {Position = UDim2.new(orig.X.Scale, orig.X.Offset + offset, orig.Y.Scale, orig.Y.Offset)}):Play()
-            task.wait(0.05)
-        end
-        if gui and gui.Parent then
-            TweenService:Create(gui, TweenInfo.new(0.1), {Position = orig}):Play()
-        end
-    end)
-end
-
-function Anim.TypeText(label, text, speed)
-    speed = speed or 0.03
-    if not label then return end
-    label.Text = ""
-    task.spawn(function()
-        for i = 1, #text do
-            if not label or not label.Parent then break end
-            label.Text = string.sub(text, 1, i)
-            task.wait(speed)
-        end
-    end)
-end
-
--- FIX: max 100 iterasi biar gak freeze
-function Anim.CreateParticles(parent, count)
-    count = count or 15
-    for i = 1, count do
-        local p = Instance.new("Frame")
-        p.Size = UDim2.new(0, 2, 0, 2)
-        p.Position = UDim2.new(math.random(), 0, math.random(), 0)
-        p.BackgroundColor3 = Color3.fromRGB(245, 245, 247)
-        p.BackgroundTransparency = 0.7
-        p.BorderSizePixel = 0
-        p.ZIndex = 1
-        p.Parent = parent
-        Instance.new("UICorner", p).CornerRadius = UDim.new(1, 0)
-
-        task.spawn(function()
-            local iterCount = 0
-            while p and p.Parent and iterCount < 100 do
-                iterCount = iterCount + 1
-                local tween = TweenService:Create(p, TweenInfo.new(
-                    math.random(8, 15), Enum.EasingStyle.Linear
-                ), {
-                    Position = UDim2.new(p.Position.X.Scale, 0, -0.1, 0),
-                    BackgroundTransparency = 1
-                })
-                tween:Play()
-                tween.Completed:Wait()
-                if not p or not p.Parent then break end
-                p.Position = UDim2.new(math.random(), 0, 1.1, 0)
-                p.BackgroundTransparency = 0.7
-            end
-        end)
-    end
-end
+THEME.YellowDot = Color3.fromRGB(212,175,55)
+THEME.GreenDot = Color3.fromRGB(80,200,120)
+THEME.RedDot = Color3.fromRGB(230,60,60)
+THEME.BlueDot = Color3.fromRGB(100,160,255)
+THEME.Shield = Color3.fromRGB(245,245,247)
+THEME.Success = Color3.fromRGB(80,200,120)
+THEME.Locked = Color3.fromRGB(110,110,120)
+THEME.LockedBG = Color3.fromRGB(28,28,32)
+THEME.Gold = Color3.fromRGB(212,175,55)
 
 --==============================================================
 -- HIGH-SECURITY GAMES
@@ -330,7 +78,7 @@ local ValidKeys = {
 local KeyWebsite = "https://arkaraffaza387-dotcom.github.io/Key-Zero/"
 
 --==============================================================
--- SCREEN GUI (FIX #1 — SAFE PARENT)
+-- SCREEN GUI (FIX — Safe Parent)
 --==============================================================
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ZetGamesV44Elegant"
@@ -341,24 +89,15 @@ ScreenGui.DisplayOrder = 999
 
 local parented = false
 pcall(function()
-    if CoreGui then
-        ScreenGui.Parent = CoreGui
-        parented = true
-    end
+    if CoreGui then ScreenGui.Parent = CoreGui; parented = true end
 end)
-
 if not parented or not ScreenGui.Parent then
-    pcall(function()
-        ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui", 10)
-        parented = true
-    end)
+    pcall(function() ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui", 10); parented = true end)
 end
-
 if not parented or not ScreenGui.Parent then
     warn("[ZET] FATAL: Gagal parent ScreenGui!")
     return
 end
-
 print("[ZET] GUI Parent OK: " .. tostring(ScreenGui.Parent and ScreenGui.Parent.Name or "NIL"))
 
 --==============================================================
@@ -376,11 +115,15 @@ local function DisconnectKey(key)
     end
 end
 
-local AimbotEnabled, AimbotTargetPart = false, "Head"
+local AimbotEnabled = false
+local AimbotTargetPart = "Head"
 local AimbotFOV = 250
-local AimbotStickyTarget, AimbotStickyType = nil, nil
-local AimbotTeamCheck, AimbotWallCheck = false, false
+local AimbotStickyTarget = nil
+local AimbotStickyType = nil
+local AimbotTeamCheck = false
+local AimbotWallCheck = false
 local AimbotSmoothness = 1
+
 local SilentAimEnabled = false
 local AimKeybindEnabled = false
 local AimKeybind = Enum.KeyCode.E
@@ -389,65 +132,108 @@ local TargetPriority = "Closest"
 local OffScreenArrowEnabled = false
 
 local FOVCircleEnabled = false
-local FOVRadius, FOVMaxRadius = 250, 5000
-local FOVColor = Color3.fromRGB(245, 245, 247)
-local FOVThickness, FOVFilled, FOVFillTransparency = 2, false, 0.85
+local FOVRadius = 250
+local FOVMaxRadius = 5000
+local FOVColor = Color3.fromRGB(245,245,247)
+local FOVThickness = 2
+local FOVFilled = false
+local FOVFillTransparency = 0.85
 
-local NPCDetectionEnabled, NPCEspEnabled = false, false
+local NPCDetectionEnabled = false
+local NPCEspEnabled = false
 local NPCFilterName = ""
-local NPCMaxDistance, NPCMaxCount = 500, 50
+local NPCMaxDistance = 500
+local NPCMaxCount = 50
 local NPCWhitelistKeywords = {"pet", "shop", "vendor", "trainer"}
 local NPCESPObjects = {}
+
 local ESPEnabled = false
-local ESPObjects, ChamsObjects = {}, {}
-local TracerColor = Color3.fromRGB(245, 245, 247)
+local ESPObjects = {}
+local ChamsObjects = {}
+local TracerColor = Color3.fromRGB(245,245,247)
 local RainbowESPEnabled = false
 local RainbowHue = 0
-local FlyNormalEnabled, FlyNormalSpeed, FlyNormalMode = false, 100, "Free"
-local FlyNormalVelocity, FlyNormalGyro = nil, nil
+
+local FlyNormalEnabled = false
+local FlyNormalSpeed = 100
+local FlyNormalMode = "Free"
+local FlyNormalVelocity = nil
+local FlyNormalGyro = nil
 local FlyKeys = {W=false, A=false, S=false, D=false, Space=false, Ctrl=false}
-local FlyVoidEnabled, FlyVoidHideMode = false, false
+
+local FlyVoidEnabled = false
+local FlyVoidHideMode = false
 local FlyVoidOriginalY = nil
-local OriginalTransparency, OriginalCanCollide = {}, {}
-local FullbrightEnabled, OriginalLighting = false, {}
-local FPSBoostEnabled, OriginalSettings = false, {}
-local SpeedHackEnabled, SpeedMultiplier = false, 100
-local MaxSpeed, DefaultWalkSpeed = 500, 16
-local NoclipEnabled, InfiniteJumpEnabled = false, false
+local OriginalTransparency = {}
+local OriginalCanCollide = {}
+
+local FullbrightEnabled = false
+local OriginalLighting = {}
+local FPSBoostEnabled = false
+local OriginalSettings = {}
+local SpeedHackEnabled = false
+local SpeedMultiplier = 100
+local MaxSpeed = 500
+local DefaultWalkSpeed = 16
+local NoclipEnabled = false
+local InfiniteJumpEnabled = false
+
 local ChatSpamEnabled = false
-local ChatSpamText, ChatSpamDelay = "ZETGAMES-RESMI", 3
-local SoundESPEnabled, SoundESPRadius = false, 100
-local SoundESPBeep, LastBeepTime = nil, 0
+local ChatSpamText = "ZETGAMES-ELEGANT"
+local ChatSpamDelay = 3
+
+local SoundESPEnabled = false
+local SoundESPRadius = 100
+local SoundESPBeep = nil
+local LastBeepTime = 0
+
 local MusicPlayerEnabled = false
 local MusicSound = nil
 local MusicPlaylist = {
     {Name = "Kelingan Mantan", ID = "78450316593213"},
     {Name = "Teh Hijau", ID = "111485011584825"},
 }
-local MusicCurrentIndex, MusicVolume = 1, 1
-local MusicShuffle, MusicRepeatAll = false, true
-local AutoRespawnEnabled, AntiFlingEnabled, AntiAFKEnabled = false, false, false
-local HitboxEnabled, HitboxSize = false, 5
-local DashEnabled, DashCooldown = false, 0
+local MusicCurrentIndex = 1
+local MusicVolume = 1
+local MusicShuffle = false
+local MusicRepeatAll = true
+local NextMusicRef = nil
+
+local AutoRespawnEnabled = false
+local AntiFlingEnabled = false
+local AntiAFKEnabled = false
+local HitboxEnabled = false
+local HitboxSize = 5
+local DashEnabled = false
+local DashCooldown = 0
 local InvisibleEnabled = false
 local InvisibleOriginalTransparency = {}
-local AutoShootEnabled, AutoShootDelay = false, 100
+local AutoShootEnabled = false
+local AutoShootDelay = 100
 local DroneModeEnabled = false
 local KillNotifEnabled = false
 local LastPlayerHealth = {}
-local InfoPanelEnabled, InfoPanelFrame = false, nil
+local InfoPanelEnabled = false
+local InfoPanelFrame = nil
 local Waypoints = {}
-local AntiKickEnabled, AutoReconnectEnabled = true, true
-local ReconnectAttempts, MaxReconnectAttempts = 0, 5
-local WatchdogLastPing, WatchdogPingThreshold = tick(), 60
+
+local AntiKickEnabled = true
+local AutoReconnectEnabled = true
+local ReconnectAttempts = 0
+local MaxReconnectAttempts = 5
+local WatchdogLastPing = tick()
+local WatchdogPingThreshold = 60
+
 local NightLockActive = true
 local NightLockKickLog = {}
-local NightLockScanInterval, NightLockLastScan = 1, 0
+local NightLockScanInterval = 1
+local NightLockLastScan = 0
+
 local TeleportPlayerList = {}
-local TeleportListFrame, TeleportListContainer = nil, nil
+local TeleportListFrame = nil
+local TeleportListContainer = nil
 local SavedLocation = nil
 local ServerHopRunning = false
-local NextMusicFunc = nil
 
 local FOVCircle
 pcall(function()
@@ -473,11 +259,11 @@ end)
 print("[ZET] State ready")
 
 --==============================================================
--- NOTIFY
+-- NOTIFY (ELEGANT)
 --==============================================================
 local Notifications = Instance.new("Frame")
-Notifications.Size = UDim2.new(0, 280, 1, 0)
-Notifications.Position = UDim2.new(1, -290, 0, 10)
+Notifications.Size = UDim2.new(0, 260, 1, 0)
+Notifications.Position = UDim2.new(1, -270, 0, 10)
 Notifications.BackgroundTransparency = 1
 Notifications.ZIndex = 500
 Notifications.Parent = ScreenGui
@@ -486,18 +272,18 @@ local function Notify(title, message, duration)
     duration = duration or 2
     if not ScreenGui or not ScreenGui.Parent then return end
     local Notif = Instance.new("Frame")
-    Notif.Size = UDim2.new(1, 0, 0, 62)
-    Notif.Position = UDim2.new(0, 0, 0, -62)
+    Notif.Size = UDim2.new(1, 0, 0, 58)
+    Notif.Position = UDim2.new(0, 0, 0, -58)
     Notif.BackgroundColor3 = THEME.PanelBG
-    Notif.BorderColor3 = THEME.Border
+    Notif.BorderColor3 = THEME.Border or THEME.Accent
     Notif.BorderSizePixel = 1
     Notif.ZIndex = 501
     Notif.Parent = Notifications
     Instance.new("UICorner", Notif).CornerRadius = UDim.new(0, 8)
 
     local GoldBar = Instance.new("Frame")
-    GoldBar.Size = UDim2.new(0, 3, 1, -16)
-    GoldBar.Position = UDim2.new(0, 0, 0, 8)
+    GoldBar.Size = UDim2.new(0, 3, 1, -14)
+    GoldBar.Position = UDim2.new(0, 0, 0, 7)
     GoldBar.BackgroundColor3 = THEME.Gold
     GoldBar.BorderSizePixel = 0
     GoldBar.ZIndex = 502
@@ -505,8 +291,8 @@ local function Notify(title, message, duration)
     Instance.new("UICorner", GoldBar).CornerRadius = UDim.new(0, 2)
 
     local T = Instance.new("TextLabel")
-    T.Size = UDim2.new(1, -20, 0, 22)
-    T.Position = UDim2.new(0, 12, 0, 6)
+    T.Size = UDim2.new(1, -18, 0, 22)
+    T.Position = UDim2.new(0, 12, 0, 4)
     T.BackgroundTransparency = 1
     T.Text = title
     T.TextColor3 = THEME.Text
@@ -517,7 +303,7 @@ local function Notify(title, message, duration)
     T.Parent = Notif
 
     local M = Instance.new("TextLabel")
-    M.Size = UDim2.new(1, -20, 0, 26)
+    M.Size = UDim2.new(1, -18, 0, 22)
     M.Position = UDim2.new(0, 12, 0, 28)
     M.BackgroundTransparency = 1
     M.Text = message
@@ -525,38 +311,13 @@ local function Notify(title, message, duration)
     M.Font = Enum.Font.Code
     M.TextSize = 10
     M.TextXAlignment = Enum.TextXAlignment.Left
-    M.TextWrapped = true
     M.ZIndex = 502
     M.Parent = Notif
 
-    local ProgressBg = Instance.new("Frame")
-    ProgressBg.Size = UDim2.new(1, 0, 0, 2)
-    ProgressBg.Position = UDim2.new(0, 0, 1, -2)
-    ProgressBg.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
-    ProgressBg.BorderSizePixel = 0
-    ProgressBg.ZIndex = 503
-    ProgressBg.Parent = Notif
-    Instance.new("UICorner", ProgressBg).CornerRadius = UDim.new(1, 0)
-
-    local ProgressFill = Instance.new("Frame")
-    ProgressFill.Size = UDim2.new(1, 0, 1, 0)
-    ProgressFill.BackgroundColor3 = THEME.Gold
-    ProgressFill.BorderSizePixel = 0
-    ProgressFill.ZIndex = 504
-    ProgressFill.Parent = ProgressBg
-    Instance.new("UICorner", ProgressFill).CornerRadius = UDim.new(1, 0)
-
-    TweenService:Create(ProgressFill, TweenInfo.new(duration, Enum.EasingStyle.Linear), {
-        Size = UDim2.new(0, 0, 1, 0)
-    }):Play()
-
-    Anim.SlideIn(Notif, 80, 0.4)
+    TweenService:Create(Notif, TweenInfo.new(0.3), {Position = UDim2.new(0, 0, 0, 0)}):Play()
     task.delay(duration, function()
         if Notif and Notif.Parent then
-            local tw = TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-                Position = UDim2.new(0, 0, 0, -62),
-                BackgroundTransparency = 1
-            })
+            local tw = TweenService:Create(Notif, TweenInfo.new(0.3), {Position = UDim2.new(0, 0, 0, -58)})
             tw:Play()
             tw.Completed:Connect(function() if Notif and Notif.Parent then Notif:Destroy() end end)
         end
@@ -650,10 +411,10 @@ local function DisableOffScreenArrow()
 end
 
 --==============================================================
--- ANTI-KICK
+-- ANTI-KICK (FIXED — Guard)
 --==============================================================
-local BlockedKeywords = {"exploit","cheat","hack","aimbot","ban","detect","script","injector","banned","violation","suspicious","anti-cheat","anticheat"}
-local LegitKeywords   = {"shutdown","restart","update","maintenance","rejoin"}
+local BlockedKeywords = {"exploit", "cheat", "hack", "aimbot", "ban", "detect", "script", "injector", "banned", "violation", "suspicious", "anti-cheat", "anticheat"}
+local LegitKeywords = {"shutdown", "restart", "update", "maintenance", "rejoin"}
 
 local function ActivateAntiKick()
     if IsHighSecurityGame() then
@@ -666,15 +427,11 @@ local function ActivateAntiKick()
         _G._ZET_OrigKick = LocalPlayer.Kick
 
         LocalPlayer.Kick = function(self, message)
-            if not AntiKickEnabled then
-                return _G._ZET_OrigKick(self, message)
-            end
+            if not AntiKickEnabled then return _G._ZET_OrigKick(self, message) end
             if not message then return end
             local msgLower = string.lower(tostring(message))
             for _, kw in ipairs(LegitKeywords) do
-                if string.find(msgLower, kw, 1, true) then
-                    return _G._ZET_OrigKick(self, message)
-                end
+                if string.find(msgLower, kw, 1, true) then return _G._ZET_OrigKick(self, message) end
             end
             for _, kw in ipairs(BlockedKeywords) do
                 if string.find(msgLower, kw, 1, true) then
@@ -689,7 +446,7 @@ local function ActivateAntiKick()
 end
 
 --==============================================================
--- AUTO-RECONNECT
+-- AUTO-RECONNECT (FIXED)
 --==============================================================
 local function AttemptReconnect()
     if ReconnectAttempts >= MaxReconnectAttempts then ReconnectAttempts = 0; return end
@@ -748,7 +505,9 @@ local function ActivateNightLock()
                     NightLockKickLog[plr.UserId] = true
                     Notify("🔒 NIGHT LOCK", plr.Name .. " | " .. reason, 5)
                     task.wait(0.5)
-                    pcall(function() LocalPlayer:Kick("[NIGHT LOCK] " .. plr.Name .. " | " .. reason .. "\nOfficial Build V4.4") end)
+                    pcall(function()
+                        LocalPlayer:Kick("[NIGHT LOCK] " .. plr.Name .. " | " .. reason .. "\nOfficial Build V4.4")
+                    end)
                     break
                 end
             end
@@ -1240,7 +999,7 @@ local function PlayMusic()
     MusicSound.Parent = SoundService
     MusicSound.Ended:Connect(function()
         if not MusicPlayerEnabled then return end
-        if MusicRepeatAll and NextMusicFunc then NextMusicFunc() end
+        if MusicRepeatAll and NextMusicRef then NextMusicRef() end
     end)
     pcall(function() MusicSound:Play() end)
 end
@@ -1254,7 +1013,7 @@ local function NextMusic()
     else MusicCurrentIndex = MusicCurrentIndex + 1; if MusicCurrentIndex > #MusicPlaylist then MusicCurrentIndex = 1 end end
     if MusicPlayerEnabled then PlayMusic() end
 end
-NextMusicFunc = NextMusic
+NextMusicRef = NextMusic
 
 local function PrevMusic()
     MusicCurrentIndex = MusicCurrentIndex - 1
@@ -1724,7 +1483,7 @@ local function EnableAimbotLoop()
 end
 
 --==============================================================
--- DRONE MODE
+-- DRONE MODE (FIXED)
 --==============================================================
 local function EnableDroneMode()
     DisconnectKey("DroneMode")
@@ -1797,7 +1556,7 @@ local function CreateInfoPanel()
     InfoPanelFrame.Position = UDim2.new(1, -200, 1, -82)
     InfoPanelFrame.BackgroundColor3 = THEME.PanelBG
     InfoPanelFrame.BackgroundTransparency = 0.15
-    InfoPanelFrame.BorderColor3 = THEME.Border
+    InfoPanelFrame.BorderColor3 = THEME.Border or THEME.Accent
     InfoPanelFrame.BorderSizePixel = 1
     InfoPanelFrame.ZIndex = 100
     InfoPanelFrame.Parent = ScreenGui
@@ -1824,8 +1583,6 @@ local function CreateInfoPanel()
     InfoPanelLabel.TextYAlignment = Enum.TextYAlignment.Top
     InfoPanelLabel.ZIndex = 101
     InfoPanelLabel.Parent = InfoPanelFrame
-
-    Anim.FadeIn(InfoPanelFrame, 0.4)
 
     task.spawn(function()
         while task.wait(1) do
@@ -1916,24 +1673,22 @@ local function RefreshTeleportList()
     for _, player in pairs(Players:GetPlayers()) do
         if player ~= LocalPlayer then
             local btn = Instance.new("TextButton")
-            btn.Size = UDim2.new(1, 0, 0, 30)
+            btn.Size = UDim2.new(1, 0, 0, 28)
             btn.Position = UDim2.new(0, 0, 0, y)
             btn.BackgroundColor3 = THEME.ButtonBG
-            btn.BorderColor3 = THEME.Border
+            btn.BorderColor3 = THEME.Border or THEME.Accent
             btn.BorderSizePixel = 1
-            btn.Text = "  ◆ " .. player.Name
+            btn.Text = "◆ " .. player.Name
             btn.TextColor3 = THEME.Text
             btn.Font = Enum.Font.Gotham
-            btn.TextSize = 11
+            btn.TextSize = 10
             btn.TextXAlignment = Enum.TextXAlignment.Left
             btn.ZIndex = 14
             btn.Parent = TeleportListContainer
-            Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 5)
-            Anim.HoverGlow(btn, THEME.ButtonBG, THEME.PanelBG, THEME.Accent)
-            Anim.Ripple(btn)
+            Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
             btn.MouseButton1Click:Connect(function() TeleportToPlayer(player) end)
             table.insert(TeleportPlayerList, btn)
-            y = y + 34
+            y = y + 32
             count = count + 1
         end
     end
@@ -1995,7 +1750,7 @@ Players.PlayerRemoving:Connect(function()
 end)
 
 --==============================================================
--- ============ UI BUILDER (ELEGANT PREMIUM) ====================
+-- UI BUILDER (ELEGANT)
 --==============================================================
 local function CreateUI()
     print("[ZET] Creating ELEGANT UI...")
@@ -2009,19 +1764,11 @@ local function CreateUI()
     LoadingScreen.ZIndex = 500
     LoadingScreen.Parent = ScreenGui
 
-    local LoadGradient = Instance.new("Frame")
-    LoadGradient.Size = UDim2.new(1, 0, 1, 0)
-    LoadGradient.BackgroundColor3 = Color3.fromRGB(15, 15, 20)
-    LoadGradient.BackgroundTransparency = 0.85
-    LoadGradient.BorderSizePixel = 0
-    LoadGradient.ZIndex = 501
-    LoadGradient.Parent = LoadingScreen
-
     local LoadingBg = Instance.new("Frame")
     LoadingBg.Size = UDim2.new(0, 420, 0, 260)
     LoadingBg.Position = UDim2.new(0.5, -210, 0.5, -130)
     LoadingBg.BackgroundColor3 = THEME.MainBG
-    LoadingBg.BorderColor3 = THEME.Border
+    LoadingBg.BorderColor3 = THEME.Border or THEME.Accent
     LoadingBg.BorderSizePixel = 1
     LoadingBg.ZIndex = 502
     LoadingBg.Parent = LoadingScreen
@@ -2073,7 +1820,7 @@ local function CreateUI()
     LBarBg.Size = UDim2.new(1, -30, 0, 12)
     LBarBg.Position = UDim2.new(0, 15, 0, 112)
     LBarBg.BackgroundColor3 = Color3.fromRGB(24, 24, 28)
-    LBarBg.BorderColor3 = THEME.Border
+    LBarBg.BorderColor3 = THEME.Border or THEME.Accent
     LBarBg.BorderSizePixel = 1
     LBarBg.ZIndex = 503
     LBarBg.Parent = LoadingBg
@@ -2128,37 +1875,17 @@ local function CreateUI()
     LVersion.ZIndex = 503
     LVersion.Parent = LoadingBg
 
-    Anim.PopIn(LoadingBg, 0.6, 0.1)
-    Anim.Pulse(LVersion, "TextTransparency", 0.3, 0, 1.5)
-
     -- ============ LOGIN FRAME ============
     local LoginFrame = Instance.new("Frame")
     LoginFrame.Size = UDim2.new(0, 340, 0, 420)
     LoginFrame.Position = UDim2.new(0.5, -170, 0.5, -210)
     LoginFrame.BackgroundColor3 = THEME.MainBG
-    LoginFrame.BorderColor3 = THEME.Border
+    LoginFrame.BorderColor3 = THEME.Border or THEME.Accent
     LoginFrame.BorderSizePixel = 1
     LoginFrame.Visible = false
     LoginFrame.ZIndex = 100
     LoginFrame.Parent = ScreenGui
     Instance.new("UICorner", LoginFrame).CornerRadius = UDim.new(0, 12)
-
-    local LoginShadow = Instance.new("Frame")
-    LoginShadow.Size = UDim2.new(1, 14, 1, 14)
-    LoginShadow.Position = UDim2.new(0, -7, 0, -7)
-    LoginShadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    LoginShadow.BackgroundTransparency = 0.5
-    LoginShadow.BorderSizePixel = 0
-    LoginShadow.ZIndex = 99
-    LoginShadow.Visible = false
-    LoginShadow.Parent = ScreenGui
-    Instance.new("UICorner", LoginShadow).CornerRadius = UDim.new(0, 16)
-
-    LoginFrame:GetPropertyChangedSignal("Position"):Connect(function()
-        if LoginShadow and LoginShadow.Parent then
-            LoginShadow.Position = UDim2.new(LoginFrame.Position.X.Scale, LoginFrame.Position.X.Offset - 7, LoginFrame.Position.Y.Scale, LoginFrame.Position.Y.Offset - 7)
-        end
-    end)
 
     local LTopBar = Instance.new("Frame")
     LTopBar.Size = UDim2.new(1, 0, 0, 40)
@@ -2209,7 +1936,6 @@ local function CreateUI()
     VerifiedBadge.ZIndex = 103
     VerifiedBadge.Parent = LTopBar
     Instance.new("UICorner", VerifiedBadge).CornerRadius = UDim.new(0, 3)
-    Anim.Pulse(VerifiedBadge, "BackgroundTransparency", 0, 0.5, 1.8)
 
     local LTitle2 = Instance.new("TextLabel")
     LTitle2.Size = UDim2.new(1, -30, 0, 26)
@@ -2251,7 +1977,7 @@ local function CreateUI()
     KeyInput.Size = UDim2.new(1, -40, 0, 44)
     KeyInput.Position = UDim2.new(0, 20, 0, 144)
     KeyInput.BackgroundColor3 = THEME.PanelBG
-    KeyInput.BorderColor3 = THEME.Border
+    KeyInput.BorderColor3 = THEME.Border or THEME.Accent
     KeyInput.BorderSizePixel = 1
     KeyInput.PlaceholderText = "Ketik key di sini..."
     KeyInput.PlaceholderColor3 = Color3.fromRGB(80, 80, 90)
@@ -2263,13 +1989,6 @@ local function CreateUI()
     KeyInput.ZIndex = 102
     KeyInput.Parent = LoginFrame
     Instance.new("UICorner", KeyInput).CornerRadius = UDim.new(0, 8)
-
-    KeyInput.Focused:Connect(function()
-        TweenService:Create(KeyInput, TweenInfo.new(0.2), {BorderColor3 = THEME.Accent}):Play()
-    end)
-    KeyInput.FocusLost:Connect(function()
-        TweenService:Create(KeyInput, TweenInfo.new(0.2), {BorderColor3 = THEME.Border}):Play()
-    end)
 
     local LoginBtn = Instance.new("TextButton")
     LoginBtn.Size = UDim2.new(1, -40, 0, 48)
@@ -2284,7 +2003,6 @@ local function CreateUI()
     LoginBtn.ZIndex = 102
     LoginBtn.Parent = LoginFrame
     Instance.new("UICorner", LoginBtn).CornerRadius = UDim.new(0, 8)
-    Anim.Ripple(LoginBtn)
 
     local GetKeyBtn = Instance.new("TextButton")
     GetKeyBtn.Size = UDim2.new(1, -40, 0, 44)
@@ -2299,8 +2017,6 @@ local function CreateUI()
     GetKeyBtn.ZIndex = 102
     GetKeyBtn.Parent = LoginFrame
     Instance.new("UICorner", GetKeyBtn).CornerRadius = UDim.new(0, 8)
-    Anim.HoverGlow(GetKeyBtn, Color3.fromRGB(18, 18, 22), Color3.fromRGB(30, 28, 20), THEME.Gold)
-    Anim.Ripple(GetKeyBtn)
 
     local StatusTxt = Instance.new("TextLabel")
     StatusTxt.Size = UDim2.new(1, -40, 0, 22)
@@ -2332,36 +2048,12 @@ local function CreateUI()
     MainHub.Size = UDim2.new(0, 380, 0, 520)
     MainHub.Position = UDim2.new(0.5, -190, 0.5, -260)
     MainHub.BackgroundColor3 = THEME.MainBG
-    MainHub.BorderColor3 = THEME.Border
+    MainHub.BorderColor3 = THEME.Border or THEME.Accent
     MainHub.BorderSizePixel = 1
     MainHub.Visible = false
     MainHub.ZIndex = 100
     MainHub.Parent = ScreenGui
     Instance.new("UICorner", MainHub).CornerRadius = UDim.new(0, 12)
-
-    Anim.CreateParticles(MainHub, 15)
-
-    local MainShadow = Instance.new("Frame")
-    MainShadow.Size = UDim2.new(1, 16, 1, 16)
-    MainShadow.Position = UDim2.new(0, -8, 0, -8)
-    MainShadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    MainShadow.BackgroundTransparency = 0.5
-    MainShadow.BorderSizePixel = 0
-    MainShadow.ZIndex = 99
-    MainShadow.Visible = false
-    MainShadow.Parent = ScreenGui
-    Instance.new("UICorner", MainShadow).CornerRadius = UDim.new(0, 16)
-
-    MainHub:GetPropertyChangedSignal("Position"):Connect(function()
-        if MainShadow and MainShadow.Parent then
-            MainShadow.Position = UDim2.new(MainHub.Position.X.Scale, MainHub.Position.X.Offset - 8, MainHub.Position.Y.Scale, MainHub.Position.Y.Offset - 8)
-        end
-    end)
-    MainHub:GetPropertyChangedSignal("Visible"):Connect(function()
-        if MainShadow and MainShadow.Parent then
-            MainShadow.Visible = MainHub.Visible
-        end
-    end)
 
     local TitleBar = Instance.new("Frame")
     TitleBar.Size = UDim2.new(1, 0, 0, 42)
@@ -2395,7 +2087,7 @@ local function CreateUI()
     CloseBtn.Size = UDim2.new(0, 30, 0, 30)
     CloseBtn.Position = UDim2.new(1, -38, 0, 6)
     CloseBtn.BackgroundColor3 = THEME.ButtonBG
-    CloseBtn.BorderColor3 = THEME.Border
+    CloseBtn.BorderColor3 = THEME.Border or THEME.Accent
     CloseBtn.BorderSizePixel = 1
     CloseBtn.Text = "✕"
     CloseBtn.TextColor3 = THEME.TextLight
@@ -2404,23 +2096,22 @@ local function CreateUI()
     CloseBtn.ZIndex = 103
     CloseBtn.Parent = TitleBar
     Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 15)
-    Anim.HoverGlow(CloseBtn, THEME.ButtonBG, Color3.fromRGB(60, 20, 20), Color3.fromRGB(230, 60, 60))
 
     local ScrollFrame = Instance.new("ScrollingFrame")
     ScrollFrame.Size = UDim2.new(1, 0, 1, -42)
     ScrollFrame.Position = UDim2.new(0, 0, 0, 42)
     ScrollFrame.BackgroundTransparency = 1
     ScrollFrame.BorderSizePixel = 0
-    ScrollFrame.ScrollBarThickness = 4
-    ScrollFrame.ScrollBarImageColor3 = THEME.Border
-    ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 4000)
+    ScrollFrame.ScrollBarThickness = 5
+    ScrollFrame.ScrollBarImageColor3 = THEME.Border or THEME.Accent
+    ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 3600)
     ScrollFrame.ScrollingEnabled = true
     ScrollFrame.ElasticBehavior = Enum.ElasticBehavior.WhenScrollable
     ScrollFrame.ZIndex = 101
     ScrollFrame.Parent = MainHub
 
     local ScrollContent = Instance.new("Frame")
-    ScrollContent.Size = UDim2.new(1, 0, 0, 4000)
+    ScrollContent.Size = UDim2.new(1, 0, 0, 3600)
     ScrollContent.BackgroundTransparency = 1
     ScrollContent.ZIndex = 101
     ScrollContent.Parent = ScrollFrame
@@ -2431,7 +2122,7 @@ local function CreateUI()
         f.Size = UDim2.new(1, -24, 0, 32)
         f.Position = UDim2.new(0, 12, 0, y)
         f.BackgroundColor3 = THEME.SectionBG
-        f.BorderColor3 = THEME.Border
+        f.BorderColor3 = THEME.Border or THEME.Accent
         f.BorderSizePixel = 1
         f.ZIndex = 102
         f.Parent = ScrollContent
@@ -2464,7 +2155,7 @@ local function CreateUI()
         btn.Size = UDim2.new(1, -24, 0, 40)
         btn.Position = UDim2.new(0, 12, 0, y)
         btn.BackgroundColor3 = THEME.ButtonBG
-        btn.BorderColor3 = THEME.Border
+        btn.BorderColor3 = THEME.Border or THEME.Accent
         btn.BorderSizePixel = 1
         btn.Text = text
         btn.TextColor3 = THEME.Text
@@ -2473,8 +2164,6 @@ local function CreateUI()
         btn.ZIndex = 102
         btn.Parent = ScrollContent
         Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
-        Anim.HoverGlow(btn, THEME.ButtonBG, THEME.PanelBG, THEME.Accent)
-        Anim.Ripple(btn)
         btn.MouseButton1Click:Connect(function() callback(btn) end)
         return btn
     end
@@ -2495,7 +2184,6 @@ local function CreateUI()
         Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
         btn.MouseButton1Click:Connect(function()
             Notify("🔒 Locked", "Fitur tidak bisa dimatikan", 2)
-            Anim.Shake(btn)
         end)
         return btn
     end
@@ -2505,7 +2193,7 @@ local function CreateUI()
         tb.Size = UDim2.new(1, -24, 0, 34)
         tb.Position = UDim2.new(0, 12, 0, y)
         tb.BackgroundColor3 = THEME.PanelBG
-        tb.BorderColor3 = THEME.Border
+        tb.BorderColor3 = THEME.Border or THEME.Accent
         tb.BorderSizePixel = 1
         tb.PlaceholderText = placeholder
         tb.PlaceholderColor3 = Color3.fromRGB(80, 80, 90)
@@ -2516,12 +2204,6 @@ local function CreateUI()
         tb.ZIndex = 102
         tb.Parent = ScrollContent
         Instance.new("UICorner", tb).CornerRadius = UDim.new(0, 8)
-        tb.Focused:Connect(function()
-            TweenService:Create(tb, TweenInfo.new(0.2), {BorderColor3 = THEME.Accent}):Play()
-        end)
-        tb.FocusLost:Connect(function()
-            TweenService:Create(tb, TweenInfo.new(0.2), {BorderColor3 = THEME.Border}):Play()
-        end)
         return tb
     end
 
@@ -2530,7 +2212,7 @@ local function CreateUI()
         b.Size = UDim2.new(0.5, -18, 0, 34)
         b.Position = UDim2.new(xPos, 0, 0, y)
         b.BackgroundColor3 = THEME.ButtonBG
-        b.BorderColor3 = THEME.Border
+        b.BorderColor3 = THEME.Border or THEME.Accent
         b.BorderSizePixel = 1
         b.Text = text
         b.TextColor3 = THEME.Text
@@ -2539,8 +2221,6 @@ local function CreateUI()
         b.ZIndex = 102
         b.Parent = ScrollContent
         Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
-        Anim.HoverGlow(b, THEME.ButtonBG, THEME.PanelBG, THEME.Accent)
-        Anim.Ripple(b)
         b.MouseButton1Click:Connect(function() callback(b) end)
         return b
     end
@@ -2551,7 +2231,7 @@ local function CreateUI()
     LockedToggle("◆  AUTO-RECONNECT: ON", 92)
     LockedToggle("◆  NIGHT LOCK: ON  ·  AUTO KICK", 136)
 
-    -- ============ THEME SWITCHER ============
+    -- ============ THEME ============
     Section("◆  THEME SWITCHER", 188)
     local ThemeLbl = Instance.new("TextLabel")
     ThemeLbl.Size = UDim2.new(1, -24, 0, 18)
@@ -2577,7 +2257,7 @@ local function CreateUI()
         b.Size = UDim2.new(0.19, 0, 1, 0)
         b.Position = UDim2.new(xPos, 0, 0, 0)
         b.BackgroundColor3 = THEME.ButtonBG
-        b.BorderColor3 = THEME.Border
+        b.BorderColor3 = THEME.Border or THEME.Accent
         b.BorderSizePixel = 1
         b.Text = label
         b.TextColor3 = THEME.Text
@@ -2586,16 +2266,13 @@ local function CreateUI()
         b.ZIndex = 103
         b.Parent = ThemeBtnFrame
         Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
-        Anim.HoverGlow(b, THEME.ButtonBG, THEME.PanelBG, THEME.Gold)
-        Anim.Ripple(b)
         b.MouseButton1Click:Connect(function()
             local preset = ThemePresets[themeName]
             if preset then
                 for k, v in pairs(preset) do THEME[k] = v end
                 CurrentThemeName = themeName
                 ThemeLbl.Text = "◇ CURRENT: " .. string.upper(themeName)
-                Notify("Theme", themeName .. " (perlu restart untuk apply penuh)", 3)
-                Anim.Shake(b)
+                Notify("Theme", themeName .. " (restart untuk apply penuh)", 3)
             end
         end)
     end
@@ -2611,7 +2288,7 @@ local function CreateUI()
     UIF.Size = UDim2.new(1, -24, 0, 90)
     UIF.Position = UDim2.new(0, 12, 0, 330)
     UIF.BackgroundColor3 = THEME.PanelBG
-    UIF.BorderColor3 = THEME.Border
+    UIF.BorderColor3 = THEME.Border or THEME.Accent
     UIF.BorderSizePixel = 1
     UIF.ZIndex = 102
     UIF.Parent = ScrollContent
@@ -2636,7 +2313,6 @@ local function CreateUI()
 
     -- ============ MAIN FEATURES ============
     Section("◆  MAIN FEATURES", 436)
-
     Toggle("◇  FPS BOOST: OFF", 472, function(btn)
         FPSBoostEnabled = not FPSBoostEnabled
         btn.Text = FPSBoostEnabled and "◆  FPS BOOST: ON" or "◇  FPS BOOST: OFF"
@@ -2644,7 +2320,6 @@ local function CreateUI()
         btn.TextColor3 = FPSBoostEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
         if FPSBoostEnabled then EnableFPSBoost() else DisableFPSBoost() end
     end)
-
     Toggle("◇  FULLBRIGHT: OFF", 516, function(btn)
         FullbrightEnabled = not FullbrightEnabled
         btn.Text = FullbrightEnabled and "◆  FULLBRIGHT: ON" or "◇  FULLBRIGHT: OFF"
@@ -2652,7 +2327,6 @@ local function CreateUI()
         btn.TextColor3 = FullbrightEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
         if FullbrightEnabled then EnableFullbright() else DisableFullbright() end
     end)
-
     Toggle("◇  SPEED HACK: OFF", 560, function(btn)
         SpeedHackEnabled = not SpeedHackEnabled
         btn.Text = SpeedHackEnabled and "◆  SPEED HACK: ON" or "◇  SPEED HACK: OFF"
@@ -2660,7 +2334,6 @@ local function CreateUI()
         btn.TextColor3 = SpeedHackEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
         if SpeedHackEnabled then EnableSpeedHack() else DisableSpeedHack() end
     end)
-
     local SpeedInput = Input("Speed (16-500)", 604, tostring(SpeedMultiplier))
     SpeedInput.FocusLost:Connect(function(enterPressed)
         if enterPressed then
@@ -2669,7 +2342,6 @@ local function CreateUI()
             SpeedInput.Text = tostring(SpeedMultiplier)
         end
     end)
-
     Toggle("◇  INFINITE JUMP: OFF", 642, function(btn)
         InfiniteJumpEnabled = not InfiniteJumpEnabled
         btn.Text = InfiniteJumpEnabled and "◆  INFINITE JUMP: ON" or "◇  INFINITE JUMP: OFF"
@@ -2677,7 +2349,6 @@ local function CreateUI()
         btn.TextColor3 = InfiniteJumpEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
         if InfiniteJumpEnabled then EnableInfiniteJump() else DisableInfiniteJump() end
     end)
-
     Toggle("◇  NOCLIP: OFF", 686, function(btn)
         NoclipEnabled = not NoclipEnabled
         btn.Text = NoclipEnabled and "◆  NOCLIP: ON" or "◇  NOCLIP: OFF"
@@ -2685,7 +2356,6 @@ local function CreateUI()
         btn.TextColor3 = NoclipEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
         if NoclipEnabled then EnableNoclip() else DisableNoclip() end
     end)
-
     Toggle("◇  INVISIBLE: OFF", 730, function(btn)
         InvisibleEnabled = not InvisibleEnabled
         btn.Text = InvisibleEnabled and "◆  INVISIBLE: ON" or "◇  INVISIBLE: OFF"
@@ -2693,7 +2363,6 @@ local function CreateUI()
         btn.TextColor3 = InvisibleEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
         if InvisibleEnabled then EnableInvisible() else DisableInvisible() end
     end)
-
     Toggle("◇  DASH: OFF  (SHIFT)", 774, function(btn)
         DashEnabled = not DashEnabled
         btn.Text = DashEnabled and "◆  DASH: ON  (SHIFT)" or "◇  DASH: OFF  (SHIFT)"
@@ -2701,6 +2370,7 @@ local function CreateUI()
         btn.TextColor3 = DashEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
 
+    -- FLY NORMAL
     Section("◆  FLY NORMAL", 826)
     Toggle("◇  FLY NORMAL: OFF", 862, function(btn)
         FlyNormalEnabled = not FlyNormalEnabled
@@ -2730,13 +2400,13 @@ local function CreateUI()
         end
     end)
 
+    -- AIMBOT
     Section("◆  AIMBOT + FOV + SILENT", 996)
-
     local AimbotBtn = Instance.new("TextButton")
     AimbotBtn.Size = UDim2.new(1, -24, 0, 46)
     AimbotBtn.Position = UDim2.new(0, 12, 0, 1032)
     AimbotBtn.BackgroundColor3 = THEME.ButtonBG
-    AimbotBtn.BorderColor3 = THEME.Border
+    AimbotBtn.BorderColor3 = THEME.Border or THEME.Accent
     AimbotBtn.BorderSizePixel = 1
     AimbotBtn.Text = "◇  AIMBOT: OFF"
     AimbotBtn.TextColor3 = THEME.Text
@@ -2745,8 +2415,6 @@ local function CreateUI()
     AimbotBtn.ZIndex = 102
     AimbotBtn.Parent = ScrollContent
     Instance.new("UICorner", AimbotBtn).CornerRadius = UDim.new(0, 8)
-    Anim.HoverGlow(AimbotBtn, THEME.ButtonBG, THEME.PanelBG, THEME.Accent)
-    Anim.Ripple(AimbotBtn)
     AimbotBtn.MouseButton1Click:Connect(function()
         AimbotEnabled = not AimbotEnabled
         if AimbotEnabled then
@@ -2763,14 +2431,12 @@ local function CreateUI()
             DisconnectKey("Aimbot")
         end
     end)
-
     Toggle("◇  SILENT AIM: OFF", 1088, function(btn)
         SilentAimEnabled = not SilentAimEnabled
         btn.Text = SilentAimEnabled and "◆  SILENT AIM: ON" or "◇  SILENT AIM: OFF"
         btn.BackgroundColor3 = SilentAimEnabled and THEME.ButtonActive or THEME.ButtonBG
         btn.TextColor3 = SilentAimEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
-
     Half("◇ FOV: OFF", 1132, 0, function(btn)
         FOVCircleEnabled = not FOVCircleEnabled
         btn.Text = FOVCircleEnabled and "◆ FOV: ON" or "◇ FOV: OFF"
@@ -2784,7 +2450,6 @@ local function CreateUI()
         btn.BackgroundColor3 = AimbotTeamCheck and THEME.ButtonActive or THEME.ButtonBG
         btn.TextColor3 = AimbotTeamCheck and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
-
     local FOVInput = Input("FOV Radius (50-5000)", 1174, tostring(FOVRadius))
     FOVInput.FocusLost:Connect(function(enterPressed)
         if enterPressed then
@@ -2793,21 +2458,18 @@ local function CreateUI()
             FOVInput.Text = tostring(FOVRadius)
         end
     end)
-
     Toggle("◇  KEYBIND AIMBOT (E): OFF", 1212, function(btn)
         AimKeybindEnabled = not AimKeybindEnabled
         btn.Text = AimKeybindEnabled and "◆  KEYBIND (E): ON" or "◇  KEYBIND (E): OFF"
         btn.BackgroundColor3 = AimKeybindEnabled and THEME.ButtonActive or THEME.ButtonBG
         btn.TextColor3 = AimKeybindEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
-
     Toggle("◇  WALL CHECK: OFF", 1256, function(btn)
         AimbotWallCheck = not AimbotWallCheck
         btn.Text = AimbotWallCheck and "◆  WALL: ON" or "◇  WALL: OFF"
         btn.BackgroundColor3 = AimbotWallCheck and THEME.ButtonActive or THEME.ButtonBG
         btn.TextColor3 = AimbotWallCheck and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
-
     Toggle("◇  AUTO SHOOT: OFF", 1300, function(btn)
         AutoShootEnabled = not AutoShootEnabled
         btn.Text = AutoShootEnabled and "◆  AUTO SHOOT: ON" or "◇  AUTO SHOOT: OFF"
@@ -2815,7 +2477,6 @@ local function CreateUI()
         btn.TextColor3 = AutoShootEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
         if AutoShootEnabled then EnableAimbotLoop() end
     end)
-
     Toggle("◇  OFF-SCREEN ARROW: OFF", 1344, function(btn)
         OffScreenArrowEnabled = not OffScreenArrowEnabled
         btn.Text = OffScreenArrowEnabled and "◆  OFF-ARROW: ON" or "◇  OFF-ARROW: OFF"
@@ -2824,6 +2485,7 @@ local function CreateUI()
         if OffScreenArrowEnabled then EnableOffScreenArrow() else DisableOffScreenArrow() end
     end)
 
+    -- ESP
     Section("◆  FULL ESP", 1396)
     Toggle("◇  ESP MASTER: OFF", 1432, function(btn)
         ESPEnabled = not ESPEnabled
@@ -2853,6 +2515,7 @@ local function CreateUI()
         btn.TextColor3 = NPCDetectionEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
 
+    -- HITBOX
     Section("◆  HITBOX", 1616)
     Toggle("◇  HITBOX: OFF", 1652, function(btn)
         HitboxEnabled = not HitboxEnabled
@@ -2877,6 +2540,7 @@ local function CreateUI()
         end
     end)
 
+    -- DRONE
     Section("◆  DRONE MODE", 1746)
     Toggle("◇  DRONE CAMERA: OFF", 1782, function(btn)
         DroneModeEnabled = not DroneModeEnabled
@@ -2886,6 +2550,7 @@ local function CreateUI()
         if DroneModeEnabled then EnableDroneMode() else DisableDroneMode() end
     end)
 
+    -- SURVIVAL
     Section("◆  SURVIVAL", 1834)
     Toggle("◇  AUTO RESPAWN: OFF", 1870, function(btn)
         AutoRespawnEnabled = not AutoRespawnEnabled
@@ -2909,6 +2574,7 @@ local function CreateUI()
         if AntiAFKEnabled then EnableAntiAFK() else DisableAntiAFK() end
     end)
 
+    -- FLY VOID
     Section("◆  FLY-VOID V2", 2010)
     Toggle("◇  FLY-VOID: OFF", 2046, function(btn)
         FlyVoidEnabled = not FlyVoidEnabled
@@ -2932,6 +2598,7 @@ local function CreateUI()
     end)
     Half("◇ KEY: V", 2090, 0.5, function(btn) Notify("Fly-Void", "Tekan V", 2) end)
 
+    -- SOUND ESP
     Section("◆  SOUND ESP", 2142)
     Toggle("◇  SOUND ESP: OFF", 2178, function(btn)
         SoundESPEnabled = not SoundESPEnabled
@@ -2941,6 +2608,7 @@ local function CreateUI()
         if SoundESPEnabled then EnableSoundESP() else DisableSoundESP() end
     end)
 
+    -- MUSIC
     Section("◆  MUSIC PLAYLIST V2", 2230)
     Toggle("◇  MUSIC: OFF", 2266, function(btn)
         MusicPlayerEnabled = not MusicPlayerEnabled
@@ -2964,6 +2632,7 @@ local function CreateUI()
         btn.TextColor3 = MusicRepeatAll and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
 
+    -- KILL NOTIF
     Section("◆  KILL / DEATH NOTIF", 2402)
     Toggle("◇  KILL NOTIF: OFF", 2438, function(btn)
         KillNotifEnabled = not KillNotifEnabled
@@ -2973,6 +2642,7 @@ local function CreateUI()
         if KillNotifEnabled then EnableKillNotif() else DisableKillNotif() end
     end)
 
+    -- INFO PANEL
     Section("◆  INFO PANEL", 2490)
     Toggle("◇  INFO PANEL: OFF", 2526, function(btn)
         InfoPanelEnabled = not InfoPanelEnabled
@@ -2982,10 +2652,12 @@ local function CreateUI()
         if InfoPanelEnabled then CreateInfoPanel() else DestroyInfoPanel() end
     end)
 
+    -- WAYPOINT
     Section("◆  WAYPOINT", 2578)
     local WPInput = Input("Waypoint name", 2614, "Base")
     Toggle("◇  ADD WAYPOINT", 2654, function(btn) AddWaypoint(WPInput.Text) end)
 
+    -- CHAT SPAM
     Section("◆  CHAT SPAM", 2706)
     Toggle("◇  CHAT SPAM: OFF", 2742, function(btn)
         ChatSpamEnabled = not ChatSpamEnabled
@@ -2999,20 +2671,22 @@ local function CreateUI()
         if enterPressed and ChatInput.Text ~= "" then ChatSpamText = ChatInput.Text end
     end)
 
+    -- SERVER HOP
     Section("◆  SERVER HOP", 2838)
     Toggle("◇  SERVER HOP (RANDOM)", 2874, function(btn) DoServerHop() end)
     Half("◇ BEST SERVER", 2918, 0, function(btn) DoBestServerHop() end)
     Half("◇ REJOIN", 2918, 0.5, function(btn) DoRejoin() end)
 
+    -- TELEPORT LIST
     Section("◆  TELEPORT KE ORANG", 2970)
     TeleportListFrame = Instance.new("ScrollingFrame")
     TeleportListFrame.Size = UDim2.new(1, -24, 0, 140)
     TeleportListFrame.Position = UDim2.new(0, 12, 0, 3006)
     TeleportListFrame.BackgroundColor3 = THEME.PanelBG
-    TeleportListFrame.BorderColor3 = THEME.Border
+    TeleportListFrame.BorderColor3 = THEME.Border or THEME.Accent
     TeleportListFrame.BorderSizePixel = 1
     TeleportListFrame.ScrollBarThickness = 4
-    TeleportListFrame.ScrollBarImageColor3 = THEME.Border
+    TeleportListFrame.ScrollBarImageColor3 = THEME.Border or THEME.Accent
     TeleportListFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
     TeleportListFrame.ZIndex = 102
     TeleportListFrame.Parent = ScrollContent
@@ -3024,15 +2698,16 @@ local function CreateUI()
     TeleportListContainer.ZIndex = 103
     TeleportListContainer.Parent = TeleportListFrame
 
+    -- TELEPORT
     Section("◆  TELEPORT", 3166)
     Toggle("◇  TELEPORT TO MOUSE", 3202, function(btn) TeleportToMouse() end)
     Half("◇ SAVE LOC", 3246, 0, function(btn) SaveLocation() end)
     Half("◇ LOAD LOC", 3246, 0.5, function(btn) LoadLocation() end)
 
+    -- SOCIAL
     Section("◆  ZETGAMES OFFICIAL", 3298)
-
     local SocialInfo = Instance.new("TextLabel")
-    SocialInfo.Size = UDim2.new(1, -24, 0, 70)
+    SocialInfo.Size = UDim2.new(1, -24, 0, 60)
     SocialInfo.Position = UDim2.new(0, 12, 0, 3334)
     SocialInfo.BackgroundColor3 = THEME.PanelBG
     SocialInfo.BorderColor3 = THEME.Gold
@@ -3048,157 +2723,43 @@ local function CreateUI()
     Instance.new("UICorner", SocialInfo).CornerRadius = UDim.new(0, 8)
 
     local PromoteBtn = Instance.new("TextButton")
-    PromoteBtn.Size = UDim2.new(1, -24, 0, 48)
-    PromoteBtn.Position = UDim2.new(0, 12, 0, 3414)
+    PromoteBtn.Size = UDim2.new(1, -24, 0, 44)
+    PromoteBtn.Position = UDim2.new(0, 12, 0, 3400)
     PromoteBtn.BackgroundColor3 = THEME.Accent
     PromoteBtn.BorderColor3 = THEME.Gold
     PromoteBtn.BorderSizePixel = 1
     PromoteBtn.Text = "◆  FOLLOW @ZetGames"
     PromoteBtn.TextColor3 = Color3.fromRGB(8, 8, 10)
     PromoteBtn.Font = Enum.Font.GothamBold
-    PromoteBtn.TextSize = 14
+    PromoteBtn.TextSize = 13
     PromoteBtn.ZIndex = 102
-    PromoteBtn.ClipsDescendants = true
     PromoteBtn.Parent = ScrollContent
     Instance.new("UICorner", PromoteBtn).CornerRadius = UDim.new(0, 8)
-    Anim.Ripple(PromoteBtn)
-
-    local Shimmer = Instance.new("Frame")
-    Shimmer.Size = UDim2.new(0, 30, 1, 0)
-    Shimmer.Position = UDim2.new(-0.1, 0, 0, 0)
-    Shimmer.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Shimmer.BackgroundTransparency = 0.7
-    Shimmer.BorderSizePixel = 0
-    Shimmer.ZIndex = 103
-    Shimmer.Parent = PromoteBtn
-
-    local ShimmerGradient = Instance.new("UIGradient")
-    ShimmerGradient.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0, 1),
-        NumberSequenceKeypoint.new(0.5, 0),
-        NumberSequenceKeypoint.new(1, 1)
-    })
-    ShimmerGradient.Parent = Shimmer
-
-    task.spawn(function()
-        while PromoteBtn and PromoteBtn.Parent do
-            Shimmer.Position = UDim2.new(-0.1, 0, 0, 0)
-            TweenService:Create(Shimmer, TweenInfo.new(2, Enum.EasingStyle.Linear), {
-                Position = UDim2.new(1.1, 0, 0, 0)
-            }):Play()
-            task.wait(3)
-        end
-    end)
-
     PromoteBtn.MouseButton1Click:Connect(function()
         Notify("◆ ZetGames", "rscripts.net/@ZetGames", 8)
-        Notify("◆ Thanks!", "Dukung creator biar update terus", 6)
     end)
 
-    local PromoteBtn2 = Instance.new("TextButton")
-    PromoteBtn2.Size = UDim2.new(0.5, -18, 0, 38)
-    PromoteBtn2.Position = UDim2.new(0, 12, 0, 3472)
-    PromoteBtn2.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
-    PromoteBtn2.BorderColor3 = THEME.Gold
-    PromoteBtn2.BorderSizePixel = 1
-    PromoteBtn2.Text = "◇ BONUS"
-    PromoteBtn2.TextColor3 = THEME.Gold
-    PromoteBtn2.Font = Enum.Font.GothamBold
-    PromoteBtn2.TextSize = 11
-    PromoteBtn2.ZIndex = 102
-    PromoteBtn2.Parent = ScrollContent
-    Instance.new("UICorner", PromoteBtn2).CornerRadius = UDim.new(0, 8)
-    Anim.HoverGlow(PromoteBtn2, Color3.fromRGB(18, 18, 22), Color3.fromRGB(30, 28, 20), THEME.Gold)
-    Anim.Ripple(PromoteBtn2)
-    PromoteBtn2.MouseButton1Click:Connect(function()
-        Notify("◆ Bonus", "Follower dapet preview V4.5!", 5)
-    end)
-
-    local PromoteBtn3 = Instance.new("TextButton")
-    PromoteBtn3.Size = UDim2.new(0.5, -18, 0, 38)
-    PromoteBtn3.Position = UDim2.new(0.5, 6, 0, 3472)
-    PromoteBtn3.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
-    PromoteBtn3.BorderColor3 = THEME.Border
-    PromoteBtn3.BorderSizePixel = 1
-    PromoteBtn3.Text = "◇ SHARE"
-    PromoteBtn3.TextColor3 = THEME.Text
-    PromoteBtn3.Font = Enum.Font.GothamBold
-    PromoteBtn3.TextSize = 11
-    PromoteBtn3.ZIndex = 102
-    PromoteBtn3.Parent = ScrollContent
-    Instance.new("UICorner", PromoteBtn3).CornerRadius = UDim.new(0, 8)
-    Anim.HoverGlow(PromoteBtn3, Color3.fromRGB(18, 18, 22), THEME.PanelBG, THEME.Accent)
-    Anim.Ripple(PromoteBtn3)
-    PromoteBtn3.MouseButton1Click:Connect(function()
-        Notify("◆ Share", "rscripts.net/@ZetGames", 6)
-    end)
-
-    -- Auto-set canvas size
-    task.defer(function()
-        task.wait(0.3)
-        local contentY = 0
-        for _, child in pairs(ScrollContent:GetChildren()) do
-            if child:IsA("GuiObject") then
-                local bottom = child.Position.Y.Offset + child.Size.Y.Offset
-                if bottom > contentY then contentY = bottom end
-            end
-        end
-        ScrollContent.Size = UDim2.new(1, 0, 0, contentY + 60)
-        ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, contentY + 60)
-        print("[ZET] Canvas size set: " .. tostring(contentY + 60))
-    end)
-
-    -- ============ FLOATING MENU BUTTON ============
+    -- MENU BUTTON
     local ToggleMenuButton = Instance.new("TextButton")
     ToggleMenuButton.Name = "ZetMenuButton"
-    ToggleMenuButton.Size = UDim2.new(0, 52, 0, 52)
-    ToggleMenuButton.Position = UDim2.new(0, 120, 0.5, -26)
-    ToggleMenuButton.BackgroundColor3 = THEME.PanelBG
-    ToggleMenuButton.BorderColor3 = THEME.Gold
-    ToggleMenuButton.BorderSizePixel = 1
+    ToggleMenuButton.Size = UDim2.new(0, 50, 0, 50)
+    ToggleMenuButton.Position = UDim2.new(0, 120, 0.5, -25)
+    ToggleMenuButton.BackgroundColor3 = THEME.ButtonActive
+    ToggleMenuButton.BorderColor3 = THEME.Accent
+    ToggleMenuButton.BorderSizePixel = 2
     ToggleMenuButton.Text = "◆"
-    ToggleMenuButton.TextColor3 = THEME.Accent
+    ToggleMenuButton.TextColor3 = Color3.fromRGB(8, 8, 10)
     ToggleMenuButton.Font = Enum.Font.GothamBold
-    ToggleMenuButton.TextSize = 24
-    ToggleMenuButton.AutoButtonColor = true
+    ToggleMenuButton.TextSize = 22
     ToggleMenuButton.Active = true
     ToggleMenuButton.ZIndex = 200
     ToggleMenuButton.Visible = false
     ToggleMenuButton.Parent = ScreenGui
     Instance.new("UICorner", ToggleMenuButton).CornerRadius = UDim.new(1, 0)
 
-    Anim.Pulse(ToggleMenuButton, "BackgroundTransparency", 0, 0.3, 1.6)
-
-    local BTN_SIZE, SAFE_TOP, SAFE_LEFT, SAFE_MARGIN = 52, 90, 100, 5
-    local DEFAULT_POS = UDim2.new(0, 120, 0.5, -26)
-
     local menuBtnDragging = false
     local menuBtnDragStart, menuBtnStartPos = nil, nil
     local menuBtnMoved = false
-    local menuBtnLastTap = 0
-    local menuBtnHoldTimer = nil
-
-    local function clampMenuButtonPos(pos)
-        local vp = Camera.ViewportSize
-        local x = math.clamp(pos.X.Offset, SAFE_LEFT, vp.X - BTN_SIZE - SAFE_MARGIN)
-        local y = math.clamp(pos.Y.Offset, SAFE_TOP, vp.Y - BTN_SIZE - SAFE_MARGIN)
-        return UDim2.new(0, x, 0, y)
-    end
-
-    local function resetMenuButtonPos(silent)
-        TweenService:Create(ToggleMenuButton, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Position = DEFAULT_POS}):Play()
-        if not silent then Notify("◆ Menu Button", "Posisi di-reset", 2) end
-    end
-
-    local lastVp = Camera.ViewportSize
-    RunService.Heartbeat:Connect(function()
-        local vp = Camera.ViewportSize
-        if vp ~= lastVp then
-            lastVp = vp
-            task.wait(0.1)
-            resetMenuButtonPos(true)
-        end
-    end)
 
     ToggleMenuButton.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -3206,15 +2767,6 @@ local function CreateUI()
             menuBtnMoved = false
             menuBtnDragStart = input.Position
             menuBtnStartPos = ToggleMenuButton.Position
-
-            local now = tick()
-            if now - menuBtnLastTap < 0.4 then
-                resetMenuButtonPos(false)
-                menuBtnDragging = false
-                menuBtnLastTap = 0
-                return
-            end
-            menuBtnLastTap = now
         end
     end)
 
@@ -3226,11 +2778,10 @@ local function CreateUI()
                 menuBtnMoved = true
             end
             if menuBtnMoved then
-                local newPos = UDim2.new(
+                ToggleMenuButton.Position = UDim2.new(
                     menuBtnStartPos.X.Scale, menuBtnStartPos.X.Offset + delta.X,
                     menuBtnStartPos.Y.Scale, menuBtnStartPos.Y.Offset + delta.Y
                 )
-                ToggleMenuButton.Position = clampMenuButtonPos(newPos)
             end
         end
     end)
@@ -3244,45 +2795,22 @@ local function CreateUI()
     ToggleMenuButton.MouseButton1Click:Connect(function()
         if menuBtnMoved then return end
         MenuVisible = not MenuVisible
-        if MenuVisible then
-            MainHub.Size = UDim2.new(0, 380, 0, 520)
-            MainHub.Visible = true
-            Anim.PopIn(MainHub, 0.4)
-        else
-            local tw = TweenService:Create(MainHub, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0)})
-            tw:Play()
-            tw.Completed:Connect(function()
-                MainHub.Visible = false
-                MainHub.Size = UDim2.new(0, 380, 0, 520)
-            end)
-        end
+        MainHub.Visible = MenuVisible
     end)
 
     CloseBtn.MouseButton1Click:Connect(function()
         MenuVisible = false
-        local tw = TweenService:Create(MainHub, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0)})
-        tw:Play()
-        tw.Completed:Connect(function()
-            MainHub.Visible = false
-            MainHub.Size = UDim2.new(0, 380, 0, 520)
-        end)
+        MainHub.Visible = false
     end)
 
     UserInputService.InputBegan:Connect(function(input, gp)
         if gp then return end
         if input.KeyCode == MenuKey and IsLoggedIn then
             MenuVisible = not MenuVisible
-            if MenuVisible then
-                MainHub.Size = UDim2.new(0, 380, 0, 520)
-                MainHub.Visible = true
-                Anim.PopIn(MainHub, 0.35)
-            else
-                MainHub.Visible = false
-            end
+            MainHub.Visible = MenuVisible
         end
     end)
 
-    -- ============ DRAGGABLE ============
     local function MakeDraggable(frame)
         local dragging, dragInput, dragStart, startPos = false, nil, nil, nil
         frame.InputBegan:Connect(function(input)
@@ -3306,17 +2834,7 @@ local function CreateUI()
     MakeDraggable(LoginFrame)
     MakeDraggable(MainHub)
 
-    -- ============ AUTO PROMOTE ============
-    task.spawn(function()
-        task.wait(30)
-        while task.wait(300) do
-            pcall(function()
-                Notify("◆ ZetGames", "Follow rscripts.net/@ZetGames", 4)
-            end)
-        end
-    end)
-
-    -- ============ LOADING 10 DETIK (FIXED) ============
+    -- LOADING 10 DETIK (FIXED)
     task.spawn(function()
         local totalTime = 10
         local startTime = tick()
@@ -3361,26 +2879,19 @@ local function CreateUI()
         
         if LoginFrame and LoginFrame.Parent then
             LoginFrame.Visible = true
-            if LoginShadow and LoginShadow.Parent then LoginShadow.Visible = true end
-            Anim.PopIn(LoginFrame, 0.5)
+            Notify("◆ V4.4 ELEGANT", "Silakan login dengan key", 3)
         end
-        
-        Notify("◆ V4.4 ELEGANT", "Silakan login dengan key", 3)
     end)
 
-    -- ============ LOGIN LOGIC ============
+    -- LOGIN LOGIC (KEY BARU)
     LoginBtn.MouseButton1Click:Connect(function()
         local key = KeyInput.Text
         local kd = ValidKeys[key]
         if kd and (kd.Expiry == 0 or os.time() < kd.Expiry) then
             IsLoggedIn = true
             LoginFrame.Visible = false
-            LoginShadow.Visible = false
             MainHub.Visible = true
-            MainShadow.Visible = true
-            Anim.PopIn(MainHub, 0.5)
             ToggleMenuButton.Visible = true
-            Anim.PopIn(ToggleMenuButton, 0.4)
             MenuVisible = true
             StatusTxt.Text = "◆ ACCESS GRANTED [" .. kd.Level .. "]"
             Notify("✓ Success", "WELCOME " .. string.upper(kd.Level), 3)
@@ -3390,35 +2901,28 @@ local function CreateUI()
             Notify("🔒 NIGHT LOCK", "AUTO KICK ACTIVE", 3)
             task.wait(0.5)
             Notify("◆ ZetGames", "Follow rscripts.net/@ZetGames", 6)
-            task.wait(1)
-            Notify("◆ Bonus", "Update V4.5 coming soon!", 5)
             task.wait(0.3)
             RefreshTeleportList()
         else
             StatusTxt.Text = "◆ ERROR: KEY INVALID"
             Notify("✕ Failed", "KEY INVALID", 2)
-            Anim.Shake(LoginFrame)
         end
     end)
 
     GetKeyBtn.MouseButton1Click:Connect(function()
         StatusTxt.Text = "◆ Buka website key di browser..."
         Notify("◆ Get Key", "Buka: " .. KeyWebsite, 8)
-        Notify("◆ Steps", "1. Copy link\n2. Buka browser\n3. Ambil key", 6)
     end)
 end
 
 --==============================================================
--- RUN (FIX #2 — XPALL WITH ERROR HANDLER)
+-- RUN (XPALL + ERROR HANDLER)
 --==============================================================
-print("[ZET] Starting ELEGANT UI — FULL FIXED...")
+print("[ZET] Starting ELEGANT UI...")
 
 local function ErrorHandler(err)
-    warn("[ZET] ERROR di CreateUI:")
-    warn("  " .. tostring(err))
+    warn("[ZET] ERROR di CreateUI: " .. tostring(err))
     warn("  Traceback: " .. debug.traceback())
-    
-    -- Fallback UI minimal
     local Fallback = Instance.new("Frame")
     Fallback.Size = UDim2.new(0, 340, 0, 150)
     Fallback.Position = UDim2.new(0.5, -170, 0.5, -75)
@@ -3427,10 +2931,9 @@ local function ErrorHandler(err)
     Fallback.BorderSizePixel = 2
     Fallback.Parent = ScreenGui
     Instance.new("UICorner", Fallback).CornerRadius = UDim.new(0, 12)
-    
     local T = Instance.new("TextLabel")
-    T.Size = UDim2.new(1, -20, 0, 60)
-    T.Position = UDim2.new(0, 10, 0, 30)
+    T.Size = UDim2.new(1, -20, 0, 80)
+    T.Position = UDim2.new(0, 10, 0, 20)
     T.BackgroundTransparency = 1
     T.Text = "⚠️ UI ERROR\n" .. tostring(err):sub(1, 200)
     T.TextColor3 = Color3.fromRGB(255, 100, 100)
@@ -3438,7 +2941,6 @@ local function ErrorHandler(err)
     T.TextSize = 10
     T.TextWrapped = true
     T.Parent = Fallback
-    
     local CloseBtn = Instance.new("TextButton")
     CloseBtn.Size = UDim2.new(1, -20, 0, 30)
     CloseBtn.Position = UDim2.new(0, 10, 1, -40)
@@ -3453,87 +2955,4 @@ end
 
 xpcall(CreateUI, ErrorHandler)
 
-print("[ZET] V4.4 ELEGANT PREMIUM loaded!")
-
---==============================================================
--- EMERGENCY FALLBACK (FIX #8)
---==============================================================
-task.spawn(function()
-    task.wait(20)
-    if not ScreenGui or not ScreenGui.Parent then return end
-    
-    local hasVisible = false
-    for _, child in pairs(ScreenGui:GetChildren()) do
-        if child:IsA("GuiObject") and child.Visible then
-            hasVisible = true
-            break
-        end
-    end
-    
-    if not hasVisible then
-        warn("[ZET] Emergency: Gak ada UI, bikin fallback login...")
-        local Fallback = Instance.new("Frame")
-        Fallback.Size = UDim2.new(0, 400, 0, 220)
-        Fallback.Position = UDim2.new(0.5, -200, 0.5, -110)
-        Fallback.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
-        Fallback.BorderColor3 = Color3.fromRGB(212, 175, 55)
-        Fallback.BorderSizePixel = 2
-        Fallback.Parent = ScreenGui
-        Instance.new("UICorner", Fallback).CornerRadius = UDim.new(0, 12)
-        
-        local T = Instance.new("TextLabel")
-        T.Size = UDim2.new(1, -20, 0, 40)
-        T.Position = UDim2.new(0, 10, 0, 15)
-        T.BackgroundTransparency = 1
-        T.Text = "◆ ZETGAMES V4.4 — EMERGENCY MODE"
-        T.TextColor3 = Color3.fromRGB(245, 245, 247)
-        T.Font = Enum.Font.GothamBold
-        T.TextSize = 14
-        T.Parent = Fallback
-        
-        local Input = Instance.new("TextBox")
-        Input.Size = UDim2.new(1, -20, 0, 40)
-        Input.Position = UDim2.new(0, 10, 0, 65)
-        Input.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
-        Input.PlaceholderText = "Masukkan key..."
-        Input.Text = ""
-        Input.TextColor3 = Color3.fromRGB(245, 245, 247)
-        Input.Font = Enum.Font.Code
-        Input.Parent = Fallback
-        Instance.new("UICorner", Input).CornerRadius = UDim.new(0, 8)
-        
-        local StatusLbl = Instance.new("TextLabel")
-        StatusLbl.Size = UDim2.new(1, -20, 0, 20)
-        StatusLbl.Position = UDim2.new(0, 10, 0, 110)
-        StatusLbl.BackgroundTransparency = 1
-        StatusLbl.Text = "Key valid: AzferModz, PremiumFazxy, FazxyPrem"
-        StatusLbl.TextColor3 = Color3.fromRGB(160, 160, 170)
-        StatusLbl.Font = Enum.Font.Code
-        StatusLbl.TextSize = 9
-        StatusLbl.Parent = Fallback
-        
-        local Btn = Instance.new("TextButton")
-        Btn.Size = UDim2.new(1, -20, 0, 44)
-        Btn.Position = UDim2.new(0, 10, 0, 140)
-        Btn.BackgroundColor3 = Color3.fromRGB(245, 245, 247)
-        Btn.Text = "◆ LOGIN"
-        Btn.TextColor3 = Color3.fromRGB(8, 8, 10)
-        Btn.Font = Enum.Font.GothamBold
-        Btn.TextSize = 14
-        Btn.Parent = Fallback
-        Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 8)
-        
-        Btn.MouseButton1Click:Connect(function()
-            if ValidKeys[Input.Text] then
-                Fallback:Destroy()
-                Notify("✓ Login OK", "Emergency login sukses", 3)
-                IsLoggedIn = true
-                pcall(ActivateAntiKick)
-                pcall(ActivateAutoReconnect)
-                pcall(ActivateNightLock)
-            else
-                Input.Text = "KEY INVALID"
-            end
-        end)
-    end
-end)
+print("[ZET] V4.4 ELEGANT loaded!")
