@@ -1,6 +1,6 @@
 --[[
     ══════════════════════════════════════════════════
-      ZetGames-AimLock V4.4 | OFFICIAL RESMI — PATCHED
+      ZetGames-AimLock V4.4 | OFFICIAL RESMI — FULL FIXED
       TEMA RESMI: HITAM & PUTIH ELEGAN (PREMIUM)
     ══════════════════════════════════════════════════
       Theme     : 🖤 ELEGANT (Black & White Premium)
@@ -28,16 +28,17 @@ local SoundService       = game:GetService("SoundService")
 local HttpService        = game:GetService("HttpService")
 local TeleportService    = game:GetService("TeleportService")
 local VirtualUser        = game:GetService("VirtualUser")
+local CoreGui            = game:GetService("CoreGui")
 local Camera             = workspace.CurrentCamera
 
 local LocalPlayer = Players.LocalPlayer
 local Mouse       = LocalPlayer:GetMouse()
 
 pcall(function() SoundService.RespectFilteringEnabled = false end)
-print("[ZET] Loading V4.4 ELEGANT — PATCHED...")
+print("[ZET] Loading V4.4 ELEGANT — FULL FIXED...")
 
 --==============================================================
--- THEME (ELEGANT EDITION)
+-- THEME PRESETS
 --==============================================================
 local ThemePresets = {
     Elegant = {
@@ -125,10 +126,9 @@ THEME.Locked    = Color3.fromRGB(110, 110, 120)
 THEME.LockedBG  = Color3.fromRGB(28, 28, 32)
 
 --==============================================================
--- MOBILE DETECTION & SCALE (FIX BUG 7)
+-- MOBILE DETECTION
 --==============================================================
 local function IsMobile()
-    -- FIX: Tablet kadang punya Touch + Mouse → cek Touch saja
     return UserInputService.TouchEnabled
 end
 local function IsSmallScreen()
@@ -139,7 +139,7 @@ end
 local UI_SCALE = IsMobile() and 0.85 or 1
 
 --==============================================================
--- ANIMATION HELPERS
+-- ANIMATION HELPERS (FIXED)
 --==============================================================
 local Anim = {}
 
@@ -150,9 +150,11 @@ function Anim.FadeIn(gui, duration, delay)
     local origTrans = gui.BackgroundTransparency
     gui.BackgroundTransparency = 1
     task.delay(delay, function()
-        TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-            BackgroundTransparency = origTrans
-        }):Play()
+        if gui and gui.Parent then
+            TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+                BackgroundTransparency = origTrans
+            }):Play()
+        end
     end)
 end
 
@@ -163,22 +165,30 @@ function Anim.SlideIn(gui, fromX, duration, delay)
     local target = gui.Position
     gui.Position = UDim2.new(target.X.Scale, target.X.Offset + (fromX or 60), target.Y.Scale, target.Y.Offset)
     task.delay(delay, function()
-        TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
-            Position = target
-        }):Play()
+        if gui and gui.Parent then
+            TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
+                Position = target
+            }):Play()
+        end
     end)
 end
 
+-- FIX: guard kalau target size 0
 function Anim.PopIn(gui, duration, delay)
     duration = duration or 0.35
     delay = delay or 0
     if not gui or not gui:IsA("GuiObject") then return end
     local targetSize = gui.Size
+    if targetSize.X.Offset == 0 and targetSize.Y.Offset == 0 then
+        return
+    end
     gui.Size = UDim2.new(0, 0, 0, 0)
     task.delay(delay, function()
-        TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-            Size = targetSize
-        }):Play()
+        if gui and gui.Parent then
+            TweenService:Create(gui, TweenInfo.new(duration, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+                Size = targetSize
+            }):Play()
+        end
     end)
 end
 
@@ -220,7 +230,9 @@ function Anim.Ripple(button)
             Size = UDim2.new(0, targetSize, 0, targetSize),
             BackgroundTransparency = 1
         }):Play()
-        task.delay(0.55, function() ripple:Destroy() end)
+        task.delay(0.55, function()
+            if ripple and ripple.Parent then ripple:Destroy() end
+        end)
     end)
 end
 
@@ -243,31 +255,33 @@ function Anim.Shake(gui)
     local orig = gui.Position
     task.spawn(function()
         for i = 1, 6 do
+            if not gui or not gui.Parent then break end
             local offset = (i % 2 == 0) and 6 or -6
             TweenService:Create(gui, TweenInfo.new(0.05), {Position = UDim2.new(orig.X.Scale, orig.X.Offset + offset, orig.Y.Scale, orig.Y.Offset)}):Play()
             task.wait(0.05)
         end
-        TweenService:Create(gui, TweenInfo.new(0.1), {Position = orig}):Play()
+        if gui and gui.Parent then
+            TweenService:Create(gui, TweenInfo.new(0.1), {Position = orig}):Play()
+        end
     end)
 end
 
--- NEW: Typing animation
 function Anim.TypeText(label, text, speed)
     speed = speed or 0.03
     if not label then return end
     label.Text = ""
     task.spawn(function()
         for i = 1, #text do
-            if not label.Parent then break end
+            if not label or not label.Parent then break end
             label.Text = string.sub(text, 1, i)
             task.wait(speed)
         end
     end)
 end
 
--- NEW: Background particles
+-- FIX: max 100 iterasi biar gak freeze
 function Anim.CreateParticles(parent, count)
-    count = count or 20
+    count = count or 15
     for i = 1, count do
         local p = Instance.new("Frame")
         p.Size = UDim2.new(0, 2, 0, 2)
@@ -280,7 +294,9 @@ function Anim.CreateParticles(parent, count)
         Instance.new("UICorner", p).CornerRadius = UDim.new(1, 0)
 
         task.spawn(function()
-            while p.Parent do
+            local iterCount = 0
+            while p and p.Parent and iterCount < 100 do
+                iterCount = iterCount + 1
                 local tween = TweenService:Create(p, TweenInfo.new(
                     math.random(8, 15), Enum.EasingStyle.Linear
                 ), {
@@ -289,7 +305,7 @@ function Anim.CreateParticles(parent, count)
                 })
                 tween:Play()
                 tween.Completed:Wait()
-                if not p.Parent then break end
+                if not p or not p.Parent then break end
                 p.Position = UDim2.new(math.random(), 0, 1.1, 0)
                 p.BackgroundTransparency = 0.7
             end
@@ -304,7 +320,7 @@ local HIGH_SECURITY_GAMES = {[920587237]=true,[2788229376]=true,[160331737]=true
 local function IsHighSecurityGame() return HIGH_SECURITY_GAMES[game.PlaceId] == true end
 
 --==============================================================
--- KEY SYSTEM (UPDATED — 3 KEY BARU)
+-- KEY SYSTEM (3 KEY BARU)
 --==============================================================
 local ValidKeys = {
     ["AzferModz"]    = {Expiry = 0, Level = "Admin"},
@@ -314,19 +330,36 @@ local ValidKeys = {
 local KeyWebsite = "https://arkaraffaza387-dotcom.github.io/Key-Zero/"
 
 --==============================================================
--- SCREEN GUI
+-- SCREEN GUI (FIX #1 — SAFE PARENT)
 --==============================================================
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ZetGamesV44Elegant"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.IgnoreGuiInset = true
-local coreOk = pcall(function() ScreenGui.Parent = game:GetService("CoreGui") end)
-if not coreOk or not ScreenGui.Parent then
-    pcall(function() ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end)
+ScreenGui.DisplayOrder = 999
+
+local parented = false
+pcall(function()
+    if CoreGui then
+        ScreenGui.Parent = CoreGui
+        parented = true
+    end
+end)
+
+if not parented or not ScreenGui.Parent then
+    pcall(function()
+        ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui", 10)
+        parented = true
+    end)
 end
 
-print("[ZET] GUI Parent: " .. tostring(ScreenGui.Parent and ScreenGui.Parent.Name or "NIL"))
+if not parented or not ScreenGui.Parent then
+    warn("[ZET] FATAL: Gagal parent ScreenGui!")
+    return
+end
+
+print("[ZET] GUI Parent OK: " .. tostring(ScreenGui.Parent and ScreenGui.Parent.Name or "NIL"))
 
 --==============================================================
 -- STATE
@@ -355,7 +388,6 @@ local AimKeyHeld = false
 local TargetPriority = "Closest"
 local OffScreenArrowEnabled = false
 
--- FIX BUG 1: FOVRadius hanya dideklarasi SEKALI di sini
 local FOVCircleEnabled = false
 local FOVRadius, FOVMaxRadius = 250, 5000
 local FOVColor = Color3.fromRGB(245, 245, 247)
@@ -415,6 +447,7 @@ local TeleportPlayerList = {}
 local TeleportListFrame, TeleportListContainer = nil, nil
 local SavedLocation = nil
 local ServerHopRunning = false
+local NextMusicFunc = nil
 
 local FOVCircle
 pcall(function()
@@ -440,7 +473,7 @@ end)
 print("[ZET] State ready")
 
 --==============================================================
--- NOTIFY (ELEGANT + PROGRESS BAR)
+-- NOTIFY
 --==============================================================
 local Notifications = Instance.new("Frame")
 Notifications.Size = UDim2.new(0, 280, 1, 0)
@@ -451,6 +484,7 @@ Notifications.Parent = ScreenGui
 
 local function Notify(title, message, duration)
     duration = duration or 2
+    if not ScreenGui or not ScreenGui.Parent then return end
     local Notif = Instance.new("Frame")
     Notif.Size = UDim2.new(1, 0, 0, 62)
     Notif.Position = UDim2.new(0, 0, 0, -62)
@@ -495,7 +529,6 @@ local function Notify(title, message, duration)
     M.ZIndex = 502
     M.Parent = Notif
 
-    -- NEW: Progress bar
     local ProgressBg = Instance.new("Frame")
     ProgressBg.Size = UDim2.new(1, 0, 0, 2)
     ProgressBg.Position = UDim2.new(0, 0, 1, -2)
@@ -519,12 +552,14 @@ local function Notify(title, message, duration)
 
     Anim.SlideIn(Notif, 80, 0.4)
     task.delay(duration, function()
-        local tw = TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-            Position = UDim2.new(0, 0, 0, -62),
-            BackgroundTransparency = 1
-        })
-        tw:Play()
-        tw.Completed:Connect(function() Notif:Destroy() end)
+        if Notif and Notif.Parent then
+            local tw = TweenService:Create(Notif, TweenInfo.new(0.35, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+                Position = UDim2.new(0, 0, 0, -62),
+                BackgroundTransparency = 1
+            })
+            tw:Play()
+            tw.Completed:Connect(function() if Notif and Notif.Parent then Notif:Destroy() end end)
+        end
     end)
 end
 
@@ -615,7 +650,7 @@ local function DisableOffScreenArrow()
 end
 
 --==============================================================
--- ANTI-KICK (FIX BUG 2 — Guard double-wrap)
+-- ANTI-KICK
 --==============================================================
 local BlockedKeywords = {"exploit","cheat","hack","aimbot","ban","detect","script","injector","banned","violation","suspicious","anti-cheat","anticheat"}
 local LegitKeywords   = {"shutdown","restart","update","maintenance","rejoin"}
@@ -626,7 +661,6 @@ local function ActivateAntiKick()
         return
     end
     pcall(function()
-        -- FIX: cuma wrap sekali
         if _G._ZET_KickWrapped then return end
         _G._ZET_KickWrapped = true
         _G._ZET_OrigKick = LocalPlayer.Kick
@@ -655,7 +689,7 @@ local function ActivateAntiKick()
 end
 
 --==============================================================
--- AUTO-RECONNECT (FIX BUG 3)
+-- AUTO-RECONNECT
 --==============================================================
 local function AttemptReconnect()
     if ReconnectAttempts >= MaxReconnectAttempts then ReconnectAttempts = 0; return end
@@ -668,7 +702,6 @@ local function ActivateAutoReconnect()
     WatchdogLastPing = tick()
     local conn = RunService.Heartbeat:Connect(function()
         if not AutoReconnectEnabled then return end
-        -- FIX: cek ping beneran
         local ok, ping = pcall(function() return LocalPlayer:GetNetworkPing() end)
         if not ok or ping > 5 then
             local now = tick()
@@ -1197,7 +1230,6 @@ local function DisableSoundESP()
     if SoundESPBeep then pcall(function() SoundESPBeep:Destroy() end); SoundESPBeep = nil end
 end
 
--- FIX BUG 5: Music Ended listener
 local function PlayMusic()
     if MusicSound then pcall(function() MusicSound:Stop(); MusicSound:Destroy() end); MusicSound = nil end
     local track = MusicPlaylist[MusicCurrentIndex]
@@ -1208,7 +1240,7 @@ local function PlayMusic()
     MusicSound.Parent = SoundService
     MusicSound.Ended:Connect(function()
         if not MusicPlayerEnabled then return end
-        if MusicRepeatAll then NextMusic() end
+        if MusicRepeatAll and NextMusicFunc then NextMusicFunc() end
     end)
     pcall(function() MusicSound:Play() end)
 end
@@ -1222,6 +1254,7 @@ local function NextMusic()
     else MusicCurrentIndex = MusicCurrentIndex + 1; if MusicCurrentIndex > #MusicPlaylist then MusicCurrentIndex = 1 end end
     if MusicPlayerEnabled then PlayMusic() end
 end
+NextMusicFunc = NextMusic
 
 local function PrevMusic()
     MusicCurrentIndex = MusicCurrentIndex - 1
@@ -1691,7 +1724,7 @@ local function EnableAimbotLoop()
 end
 
 --==============================================================
--- DRONE MODE (FIX BUG 6)
+-- DRONE MODE
 --==============================================================
 local function EnableDroneMode()
     DisconnectKey("DroneMode")
@@ -1712,7 +1745,6 @@ end
 local function DisableDroneMode()
     DisconnectKey("DroneMode")
     DroneModeEnabled = false
-    -- FIX: tunggu karakter ada sebelum restore
     task.spawn(function()
         local t = tick()
         while not LocalPlayer.Character and tick() - t < 3 do task.wait(0.1) end
@@ -1955,7 +1987,6 @@ local function AddWaypoint(name)
     Notify("Waypoint", "Added: " .. name, 2)
 end
 
--- FIX BUG 9: Pakai event, bukan while loop
 Players.PlayerAdded:Connect(function()
     if IsLoggedIn then task.wait(0.5); RefreshTeleportList() end
 end)
@@ -2119,17 +2150,14 @@ local function CreateUI()
     LoginShadow.BackgroundTransparency = 0.5
     LoginShadow.BorderSizePixel = 0
     LoginShadow.ZIndex = 99
+    LoginShadow.Visible = false
     LoginShadow.Parent = ScreenGui
     Instance.new("UICorner", LoginShadow).CornerRadius = UDim.new(0, 16)
 
     LoginFrame:GetPropertyChangedSignal("Position"):Connect(function()
-        LoginShadow.Position = UDim2.new(LoginFrame.Position.X.Scale, LoginFrame.Position.X.Offset - 7, LoginFrame.Position.Y.Scale, LoginFrame.Position.Y.Offset - 7)
-    end)
-    LoginFrame:GetPropertyChangedSignal("Size"):Connect(function()
-        LoginShadow.Size = UDim2.new(LoginFrame.Size.X.Scale, LoginFrame.Size.X.Offset + 14, LoginFrame.Size.Y.Scale, LoginFrame.Size.Y.Offset + 14)
-    end)
-    LoginFrame:GetPropertyChangedSignal("Visible"):Connect(function()
-        LoginShadow.Visible = LoginFrame.Visible
+        if LoginShadow and LoginShadow.Parent then
+            LoginShadow.Position = UDim2.new(LoginFrame.Position.X.Scale, LoginFrame.Position.X.Offset - 7, LoginFrame.Position.Y.Scale, LoginFrame.Position.Y.Offset - 7)
+        end
     end)
 
     local LTopBar = Instance.new("Frame")
@@ -2311,7 +2339,6 @@ local function CreateUI()
     MainHub.Parent = ScreenGui
     Instance.new("UICorner", MainHub).CornerRadius = UDim.new(0, 12)
 
-    -- NEW: Particles background
     Anim.CreateParticles(MainHub, 15)
 
     local MainShadow = Instance.new("Frame")
@@ -2321,17 +2348,19 @@ local function CreateUI()
     MainShadow.BackgroundTransparency = 0.5
     MainShadow.BorderSizePixel = 0
     MainShadow.ZIndex = 99
+    MainShadow.Visible = false
     MainShadow.Parent = ScreenGui
     Instance.new("UICorner", MainShadow).CornerRadius = UDim.new(0, 16)
 
     MainHub:GetPropertyChangedSignal("Position"):Connect(function()
-        MainShadow.Position = UDim2.new(MainHub.Position.X.Scale, MainHub.Position.X.Offset - 8, MainHub.Position.Y.Scale, MainHub.Position.Y.Offset - 8)
-    end)
-    MainHub:GetPropertyChangedSignal("Size"):Connect(function()
-        MainShadow.Size = UDim2.new(MainHub.Size.X.Scale, MainHub.Size.X.Offset + 16, MainHub.Size.Y.Scale, MainHub.Size.Y.Offset + 16)
+        if MainShadow and MainShadow.Parent then
+            MainShadow.Position = UDim2.new(MainHub.Position.X.Scale, MainHub.Position.X.Offset - 8, MainHub.Position.Y.Scale, MainHub.Position.Y.Offset - 8)
+        end
     end)
     MainHub:GetPropertyChangedSignal("Visible"):Connect(function()
-        MainShadow.Visible = MainHub.Visible
+        if MainShadow and MainShadow.Parent then
+            MainShadow.Visible = MainHub.Visible
+        end
     end)
 
     local TitleBar = Instance.new("Frame")
@@ -2354,17 +2383,13 @@ local function CreateUI()
     TitleText.Size = UDim2.new(1, -70, 1, 0)
     TitleText.Position = UDim2.new(0, 14, 0, 0)
     TitleText.BackgroundTransparency = 1
-    TitleText.Text = ""
+    TitleText.Text = "◆  ZETGAMES  ·  V4.4  ·  PREMIUM"
     TitleText.TextColor3 = THEME.Accent
     TitleText.Font = Enum.Font.GothamBold
     TitleText.TextSize = 11
     TitleText.TextXAlignment = Enum.TextXAlignment.Left
     TitleText.ZIndex = 103
     TitleText.Parent = TitleBar
-
-    -- NEW: Typing animation
-    task.wait(0.2)
-    Anim.TypeText(TitleText, "◆  ZETGAMES  ·  V4.4  ·  PREMIUM", 0.04)
 
     local CloseBtn = Instance.new("TextButton")
     CloseBtn.Size = UDim2.new(0, 30, 0, 30)
@@ -2388,14 +2413,14 @@ local function CreateUI()
     ScrollFrame.BorderSizePixel = 0
     ScrollFrame.ScrollBarThickness = 4
     ScrollFrame.ScrollBarImageColor3 = THEME.Border
-    ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- FIX BUG 10: auto set nanti
+    ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 4000)
     ScrollFrame.ScrollingEnabled = true
     ScrollFrame.ElasticBehavior = Enum.ElasticBehavior.WhenScrollable
     ScrollFrame.ZIndex = 101
     ScrollFrame.Parent = MainHub
 
     local ScrollContent = Instance.new("Frame")
-    ScrollContent.Size = UDim2.new(1, 0, 0, 5600)
+    ScrollContent.Size = UDim2.new(1, 0, 0, 4000)
     ScrollContent.BackgroundTransparency = 1
     ScrollContent.ZIndex = 101
     ScrollContent.Parent = ScrollFrame
@@ -2676,7 +2701,6 @@ local function CreateUI()
         btn.TextColor3 = DashEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
 
-    -- ============ FLY NORMAL ============
     Section("◆  FLY NORMAL", 826)
     Toggle("◇  FLY NORMAL: OFF", 862, function(btn)
         FlyNormalEnabled = not FlyNormalEnabled
@@ -2706,7 +2730,6 @@ local function CreateUI()
         end
     end)
 
-    -- ============ AIMBOT ============
     Section("◆  AIMBOT + FOV + SILENT", 996)
 
     local AimbotBtn = Instance.new("TextButton")
@@ -2801,7 +2824,6 @@ local function CreateUI()
         if OffScreenArrowEnabled then EnableOffScreenArrow() else DisableOffScreenArrow() end
     end)
 
-    -- ============ ESP ============
     Section("◆  FULL ESP", 1396)
     Toggle("◇  ESP MASTER: OFF", 1432, function(btn)
         ESPEnabled = not ESPEnabled
@@ -2831,7 +2853,6 @@ local function CreateUI()
         btn.TextColor3 = NPCDetectionEnabled and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
 
-    -- ============ HITBOX ============
     Section("◆  HITBOX", 1616)
     Toggle("◇  HITBOX: OFF", 1652, function(btn)
         HitboxEnabled = not HitboxEnabled
@@ -2856,7 +2877,6 @@ local function CreateUI()
         end
     end)
 
-    -- ============ DRONE ============
     Section("◆  DRONE MODE", 1746)
     Toggle("◇  DRONE CAMERA: OFF", 1782, function(btn)
         DroneModeEnabled = not DroneModeEnabled
@@ -2866,7 +2886,6 @@ local function CreateUI()
         if DroneModeEnabled then EnableDroneMode() else DisableDroneMode() end
     end)
 
-    -- ============ SURVIVAL ============
     Section("◆  SURVIVAL", 1834)
     Toggle("◇  AUTO RESPAWN: OFF", 1870, function(btn)
         AutoRespawnEnabled = not AutoRespawnEnabled
@@ -2890,7 +2909,6 @@ local function CreateUI()
         if AntiAFKEnabled then EnableAntiAFK() else DisableAntiAFK() end
     end)
 
-    -- ============ FLY VOID ============
     Section("◆  FLY-VOID V2", 2010)
     Toggle("◇  FLY-VOID: OFF", 2046, function(btn)
         FlyVoidEnabled = not FlyVoidEnabled
@@ -2914,7 +2932,6 @@ local function CreateUI()
     end)
     Half("◇ KEY: V", 2090, 0.5, function(btn) Notify("Fly-Void", "Tekan V", 2) end)
 
-    -- ============ SOUND ESP ============
     Section("◆  SOUND ESP", 2142)
     Toggle("◇  SOUND ESP: OFF", 2178, function(btn)
         SoundESPEnabled = not SoundESPEnabled
@@ -2924,7 +2941,6 @@ local function CreateUI()
         if SoundESPEnabled then EnableSoundESP() else DisableSoundESP() end
     end)
 
-    -- ============ MUSIC ============
     Section("◆  MUSIC PLAYLIST V2", 2230)
     Toggle("◇  MUSIC: OFF", 2266, function(btn)
         MusicPlayerEnabled = not MusicPlayerEnabled
@@ -2948,7 +2964,6 @@ local function CreateUI()
         btn.TextColor3 = MusicRepeatAll and Color3.fromRGB(8, 8, 10) or THEME.Text
     end)
 
-    -- ============ KILL NOTIF ============
     Section("◆  KILL / DEATH NOTIF", 2402)
     Toggle("◇  KILL NOTIF: OFF", 2438, function(btn)
         KillNotifEnabled = not KillNotifEnabled
@@ -2958,7 +2973,6 @@ local function CreateUI()
         if KillNotifEnabled then EnableKillNotif() else DisableKillNotif() end
     end)
 
-    -- ============ INFO PANEL ============
     Section("◆  INFO PANEL", 2490)
     Toggle("◇  INFO PANEL: OFF", 2526, function(btn)
         InfoPanelEnabled = not InfoPanelEnabled
@@ -2968,12 +2982,10 @@ local function CreateUI()
         if InfoPanelEnabled then CreateInfoPanel() else DestroyInfoPanel() end
     end)
 
-    -- ============ WAYPOINT ============
     Section("◆  WAYPOINT", 2578)
     local WPInput = Input("Waypoint name", 2614, "Base")
     Toggle("◇  ADD WAYPOINT", 2654, function(btn) AddWaypoint(WPInput.Text) end)
 
-    -- ============ CHAT SPAM ============
     Section("◆  CHAT SPAM", 2706)
     Toggle("◇  CHAT SPAM: OFF", 2742, function(btn)
         ChatSpamEnabled = not ChatSpamEnabled
@@ -2987,13 +2999,11 @@ local function CreateUI()
         if enterPressed and ChatInput.Text ~= "" then ChatSpamText = ChatInput.Text end
     end)
 
-    -- ============ SERVER HOP ============
     Section("◆  SERVER HOP", 2838)
     Toggle("◇  SERVER HOP (RANDOM)", 2874, function(btn) DoServerHop() end)
     Half("◇ BEST SERVER", 2918, 0, function(btn) DoBestServerHop() end)
     Half("◇ REJOIN", 2918, 0.5, function(btn) DoRejoin() end)
 
-    -- ============ TELEPORT LIST ============
     Section("◆  TELEPORT KE ORANG", 2970)
     TeleportListFrame = Instance.new("ScrollingFrame")
     TeleportListFrame.Size = UDim2.new(1, -24, 0, 140)
@@ -3014,13 +3024,11 @@ local function CreateUI()
     TeleportListContainer.ZIndex = 103
     TeleportListContainer.Parent = TeleportListFrame
 
-    -- ============ TELEPORT ============
     Section("◆  TELEPORT", 3166)
     Toggle("◇  TELEPORT TO MOUSE", 3202, function(btn) TeleportToMouse() end)
     Half("◇ SAVE LOC", 3246, 0, function(btn) SaveLocation() end)
     Half("◇ LOAD LOC", 3246, 0.5, function(btn) LoadLocation() end)
 
-    -- ============ SOCIAL ============
     Section("◆  ZETGAMES OFFICIAL", 3298)
 
     local SocialInfo = Instance.new("TextLabel")
@@ -3055,7 +3063,6 @@ local function CreateUI()
     Instance.new("UICorner", PromoteBtn).CornerRadius = UDim.new(0, 8)
     Anim.Ripple(PromoteBtn)
 
-    -- NEW: Shimmer effect
     local Shimmer = Instance.new("Frame")
     Shimmer.Size = UDim2.new(0, 30, 1, 0)
     Shimmer.Position = UDim2.new(-0.1, 0, 0, 0)
@@ -3074,7 +3081,7 @@ local function CreateUI()
     ShimmerGradient.Parent = Shimmer
 
     task.spawn(function()
-        while PromoteBtn.Parent do
+        while PromoteBtn and PromoteBtn.Parent do
             Shimmer.Position = UDim2.new(-0.1, 0, 0, 0)
             TweenService:Create(Shimmer, TweenInfo.new(2, Enum.EasingStyle.Linear), {
                 Position = UDim2.new(1.1, 0, 0, 0)
@@ -3126,9 +3133,9 @@ local function CreateUI()
         Notify("◆ Share", "rscripts.net/@ZetGames", 6)
     end)
 
-    -- FIX BUG 10: Auto-set canvas size
+    -- Auto-set canvas size
     task.defer(function()
-        task.wait(0.2)
+        task.wait(0.3)
         local contentY = 0
         for _, child in pairs(ScrollContent:GetChildren()) do
             if child:IsA("GuiObject") then
@@ -3136,8 +3143,9 @@ local function CreateUI()
                 if bottom > contentY then contentY = bottom end
             end
         end
-        ScrollContent.Size = UDim2.new(1, 0, 0, contentY + 40)
-        ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, contentY + 40)
+        ScrollContent.Size = UDim2.new(1, 0, 0, contentY + 60)
+        ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, contentY + 60)
+        print("[ZET] Canvas size set: " .. tostring(contentY + 60))
     end)
 
     -- ============ FLOATING MENU BUTTON ============
@@ -3190,10 +3198,6 @@ local function CreateUI()
             task.wait(0.1)
             resetMenuButtonPos(true)
         end
-        local pos = ToggleMenuButton.AbsolutePosition
-        if pos.X < -BTN_SIZE or pos.Y < -BTN_SIZE or pos.X > vp.X or pos.Y > vp.Y then
-            resetMenuButtonPos(true)
-        end
     end)
 
     ToggleMenuButton.InputBegan:Connect(function(input)
@@ -3211,14 +3215,6 @@ local function CreateUI()
                 return
             end
             menuBtnLastTap = now
-
-            if menuBtnHoldTimer then pcall(function() menuBtnHoldTimer:Cancel() end) end
-            menuBtnHoldTimer = task.delay(2, function()
-                if menuBtnDragging and not menuBtnMoved then
-                    resetMenuButtonPos(false)
-                    menuBtnDragging = false
-                end
-            end)
         end
     end)
 
@@ -3228,7 +3224,6 @@ local function CreateUI()
             local delta = input.Position - menuBtnDragStart
             if math.abs(delta.X) > 8 or math.abs(delta.Y) > 8 then
                 menuBtnMoved = true
-                if menuBtnHoldTimer then pcall(function() menuBtnHoldTimer:Cancel() end); menuBtnHoldTimer = nil end
             end
             if menuBtnMoved then
                 local newPos = UDim2.new(
@@ -3243,7 +3238,6 @@ local function CreateUI()
     UserInputService.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
             menuBtnDragging = false
-            if menuBtnHoldTimer then pcall(function() menuBtnHoldTimer:Cancel() end); menuBtnHoldTimer = nil end
         end
     end)
 
@@ -3274,7 +3268,6 @@ local function CreateUI()
         end)
     end)
 
-    -- FIX BUG 8: MenuKey toggle dengan reset size
     UserInputService.InputBegan:Connect(function(input, gp)
         if gp then return end
         if input.KeyCode == MenuKey and IsLoggedIn then
@@ -3323,7 +3316,7 @@ local function CreateUI()
         end
     end)
 
-    -- ============ LOADING 10 DETIK ============
+    -- ============ LOADING 10 DETIK (FIXED) ============
     task.spawn(function()
         local totalTime = 10
         local startTime = tick()
@@ -3340,28 +3333,42 @@ local function CreateUI()
             "> Selesai!",
         }
         for i = 1, 100 do
+            if not LoadingScreen or not LoadingScreen.Parent then break end
             local elapsed = tick() - startTime
             local remaining = math.max(0, totalTime - elapsed)
-            TweenService:Create(LBarFill, TweenInfo.new(0.1), {Size = UDim2.new(i / 100, 0, 1, 0)}):Play()
-            LPercent.Text = i .. "%"
-            LTimeLeft.Text = "Waktu tersisa: " .. math.ceil(remaining) .. " detik"
+            pcall(function()
+                TweenService:Create(LBarFill, TweenInfo.new(0.1), {Size = UDim2.new(i / 100, 0, 1, 0)}):Play()
+            end)
+            if LPercent and LPercent.Parent then LPercent.Text = i .. "%" end
+            if LTimeLeft and LTimeLeft.Parent then LTimeLeft.Text = "Waktu tersisa: " .. math.ceil(remaining) .. " detik" end
             local msgIdx = math.min(10, math.ceil(i / 10))
-            LStatus.Text = messages[msgIdx]
+            if LStatus and LStatus.Parent then LStatus.Text = messages[msgIdx] end
             task.wait(totalTime / 100)
         end
+        
         task.wait(0.3)
-        TweenService:Create(LoadingScreen, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1}):Play()
-        TweenService:Create(LoadingBg, TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
-        task.wait(0.6)
-        LoadingScreen.Visible = false
-        LoadingScreen:Destroy()
-        LoginFrame.Visible = true
-        LoginShadow.Visible = true
-        Anim.PopIn(LoginFrame, 0.5)
+        
+        if LoadingScreen and LoadingScreen.Parent then
+            pcall(function()
+                TweenService:Create(LoadingScreen, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {BackgroundTransparency = 1}):Play()
+                TweenService:Create(LoadingBg, TweenInfo.new(0.4), {BackgroundTransparency = 1}):Play()
+            end)
+            task.wait(0.6)
+            if LoadingScreen and LoadingScreen.Parent then
+                LoadingScreen:Destroy()
+            end
+        end
+        
+        if LoginFrame and LoginFrame.Parent then
+            LoginFrame.Visible = true
+            if LoginShadow and LoginShadow.Parent then LoginShadow.Visible = true end
+            Anim.PopIn(LoginFrame, 0.5)
+        end
+        
         Notify("◆ V4.4 ELEGANT", "Silakan login dengan key", 3)
     end)
 
-    -- ============ LOGIN LOGIC (UPDATED KEY) ============
+    -- ============ LOGIN LOGIC ============
     LoginBtn.MouseButton1Click:Connect(function()
         local key = KeyInput.Text
         local kd = ValidKeys[key]
@@ -3370,6 +3377,7 @@ local function CreateUI()
             LoginFrame.Visible = false
             LoginShadow.Visible = false
             MainHub.Visible = true
+            MainShadow.Visible = true
             Anim.PopIn(MainHub, 0.5)
             ToggleMenuButton.Visible = true
             Anim.PopIn(ToggleMenuButton, 0.4)
@@ -3401,8 +3409,131 @@ local function CreateUI()
 end
 
 --==============================================================
--- RUN
+-- RUN (FIX #2 — XPALL WITH ERROR HANDLER)
 --==============================================================
-print("[ZET] Starting ELEGANT UI — PATCHED...")
-pcall(CreateUI)
+print("[ZET] Starting ELEGANT UI — FULL FIXED...")
+
+local function ErrorHandler(err)
+    warn("[ZET] ERROR di CreateUI:")
+    warn("  " .. tostring(err))
+    warn("  Traceback: " .. debug.traceback())
+    
+    -- Fallback UI minimal
+    local Fallback = Instance.new("Frame")
+    Fallback.Size = UDim2.new(0, 340, 0, 150)
+    Fallback.Position = UDim2.new(0.5, -170, 0.5, -75)
+    Fallback.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    Fallback.BorderColor3 = Color3.fromRGB(212, 175, 55)
+    Fallback.BorderSizePixel = 2
+    Fallback.Parent = ScreenGui
+    Instance.new("UICorner", Fallback).CornerRadius = UDim.new(0, 12)
+    
+    local T = Instance.new("TextLabel")
+    T.Size = UDim2.new(1, -20, 0, 60)
+    T.Position = UDim2.new(0, 10, 0, 30)
+    T.BackgroundTransparency = 1
+    T.Text = "⚠️ UI ERROR\n" .. tostring(err):sub(1, 200)
+    T.TextColor3 = Color3.fromRGB(255, 100, 100)
+    T.Font = Enum.Font.Code
+    T.TextSize = 10
+    T.TextWrapped = true
+    T.Parent = Fallback
+    
+    local CloseBtn = Instance.new("TextButton")
+    CloseBtn.Size = UDim2.new(1, -20, 0, 30)
+    CloseBtn.Position = UDim2.new(0, 10, 1, -40)
+    CloseBtn.BackgroundColor3 = Color3.fromRGB(40, 20, 20)
+    CloseBtn.Text = "✕ CLOSE"
+    CloseBtn.TextColor3 = Color3.fromRGB(255, 100, 100)
+    CloseBtn.Font = Enum.Font.GothamBold
+    CloseBtn.Parent = Fallback
+    Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 6)
+    CloseBtn.MouseButton1Click:Connect(function() Fallback:Destroy() end)
+end
+
+xpcall(CreateUI, ErrorHandler)
+
 print("[ZET] V4.4 ELEGANT PREMIUM loaded!")
+
+--==============================================================
+-- EMERGENCY FALLBACK (FIX #8)
+--==============================================================
+task.spawn(function()
+    task.wait(20)
+    if not ScreenGui or not ScreenGui.Parent then return end
+    
+    local hasVisible = false
+    for _, child in pairs(ScreenGui:GetChildren()) do
+        if child:IsA("GuiObject") and child.Visible then
+            hasVisible = true
+            break
+        end
+    end
+    
+    if not hasVisible then
+        warn("[ZET] Emergency: Gak ada UI, bikin fallback login...")
+        local Fallback = Instance.new("Frame")
+        Fallback.Size = UDim2.new(0, 400, 0, 220)
+        Fallback.Position = UDim2.new(0.5, -200, 0.5, -110)
+        Fallback.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+        Fallback.BorderColor3 = Color3.fromRGB(212, 175, 55)
+        Fallback.BorderSizePixel = 2
+        Fallback.Parent = ScreenGui
+        Instance.new("UICorner", Fallback).CornerRadius = UDim.new(0, 12)
+        
+        local T = Instance.new("TextLabel")
+        T.Size = UDim2.new(1, -20, 0, 40)
+        T.Position = UDim2.new(0, 10, 0, 15)
+        T.BackgroundTransparency = 1
+        T.Text = "◆ ZETGAMES V4.4 — EMERGENCY MODE"
+        T.TextColor3 = Color3.fromRGB(245, 245, 247)
+        T.Font = Enum.Font.GothamBold
+        T.TextSize = 14
+        T.Parent = Fallback
+        
+        local Input = Instance.new("TextBox")
+        Input.Size = UDim2.new(1, -20, 0, 40)
+        Input.Position = UDim2.new(0, 10, 0, 65)
+        Input.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+        Input.PlaceholderText = "Masukkan key..."
+        Input.Text = ""
+        Input.TextColor3 = Color3.fromRGB(245, 245, 247)
+        Input.Font = Enum.Font.Code
+        Input.Parent = Fallback
+        Instance.new("UICorner", Input).CornerRadius = UDim.new(0, 8)
+        
+        local StatusLbl = Instance.new("TextLabel")
+        StatusLbl.Size = UDim2.new(1, -20, 0, 20)
+        StatusLbl.Position = UDim2.new(0, 10, 0, 110)
+        StatusLbl.BackgroundTransparency = 1
+        StatusLbl.Text = "Key valid: AzferModz, PremiumFazxy, FazxyPrem"
+        StatusLbl.TextColor3 = Color3.fromRGB(160, 160, 170)
+        StatusLbl.Font = Enum.Font.Code
+        StatusLbl.TextSize = 9
+        StatusLbl.Parent = Fallback
+        
+        local Btn = Instance.new("TextButton")
+        Btn.Size = UDim2.new(1, -20, 0, 44)
+        Btn.Position = UDim2.new(0, 10, 0, 140)
+        Btn.BackgroundColor3 = Color3.fromRGB(245, 245, 247)
+        Btn.Text = "◆ LOGIN"
+        Btn.TextColor3 = Color3.fromRGB(8, 8, 10)
+        Btn.Font = Enum.Font.GothamBold
+        Btn.TextSize = 14
+        Btn.Parent = Fallback
+        Instance.new("UICorner", Btn).CornerRadius = UDim.new(0, 8)
+        
+        Btn.MouseButton1Click:Connect(function()
+            if ValidKeys[Input.Text] then
+                Fallback:Destroy()
+                Notify("✓ Login OK", "Emergency login sukses", 3)
+                IsLoggedIn = true
+                pcall(ActivateAntiKick)
+                pcall(ActivateAutoReconnect)
+                pcall(ActivateNightLock)
+            else
+                Input.Text = "KEY INVALID"
+            end
+        end)
+    end
+end)
